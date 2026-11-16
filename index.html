@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>PRTS ÃËÔ¼¼¤»î¼ÆËãÆ÷</title>
+<title>PRTS ç›Ÿçº¦æ¿€æ´»è®¡ç®—å™¨</title>
 <style>
   :root{
     --bg:#0f1419; --panel:#1a222b; --panel2:#202b36; --line:#33414f;
@@ -72,7 +72,6 @@
   .ban-chip.on{background:#f8514922;border-color:var(--danger);color:#ffb3ad}
   .ban-chip input{accent-color:var(--danger);margin:0;transform:scale(0.9)}
 
-  /* ÃËÔ¼É¸Ñ¡À¸ */
   .filter-box {
     background: var(--panel2); border: 1px dashed var(--line); border-radius: 8px;
     padding: 8px; margin-bottom: 10px;
@@ -104,10 +103,6 @@
   .cov-row.partial .cov-icon{color:var(--warn);border-color:var(--warn)}
   .cov-row.banned .cov-icon{color:var(--danger);border-color:var(--danger)}
   .cov-name{font-weight:600;white-space:nowrap}
-  .cov-type{
-    font-size:10px;color:var(--muted);border:1px solid var(--line);
-    border-radius:4px;padding:0 4px;line-height:14px;white-space:nowrap;
-  }
   .cov-spacer{flex:1}
   .cov-count{
     font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted);
@@ -135,9 +130,7 @@
   .cov-row.expanded + .cov-members{display:block}
   .cov-members .hit{color:#9ecbff}
   .cov-members .eq{color:var(--accent2)}
-  .cov-hint{font-size:11px;color:var(--muted);margin-bottom:8px}
 
-  /* ×°±¸Çø */
   .equip-box{
     background:var(--panel2);border:1px dashed var(--line);border-radius:8px;
     padding:8px;margin-bottom:12px;
@@ -170,288 +163,182 @@
     background:var(--panel2);border:1px solid var(--line);color:var(--muted);
     cursor:pointer;
   }
-  .equip-clear:active{color:var(--danger);border-color:var(--danger)}
   .equip-empty{font-size:12px;color:var(--muted);padding:4px 0}
-  .equip-note{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
 </style>
 </head>
 <body>
 
-<h1>PRTS ÃËÔ¼¼¤»î¼ÆËãÆ÷</h1>
+<h1>PRTS ç›Ÿçº¦æ¿€æ´»è®¡ç®—å™¨</h1>
 <div class="sub">
-  ºËĞÄÃËÔ¼±» Ban Ê±£¬µÚÒ»ºËĞÄÃËÔ¼Îª¸ÃÃËÔ¼µÄ¸ÉÔ±²»¿ÉÑ¡¡£ÎŞºËĞÄÃËÔ¼µÄ¸ÉÔ±ĞèËùÓĞËùÊôÃËÔ¼¶¼±» Ban ²Å²»¿ÉÑ¡¡£µ÷ºÍ¼¤»îÊ±ºËĞÄÃËÔ¼ÈËÊı +1¡£±©ÔêÌúÆ¤¿É´© 6 ¼ş×°±¸¡£
+  æ ¸å¿ƒç›Ÿçº¦è¢« Ban æ—¶ï¼Œç¬¬ä¸€æ ¸å¿ƒç›Ÿçº¦ä¸ºè¯¥ç›Ÿçº¦çš„å¹²å‘˜ä¸å¯é€‰ã€‚æ— æ ¸å¿ƒç›Ÿçº¦çš„å¹²å‘˜éœ€æ‰€æœ‰æ‰€å±ç›Ÿçº¦éƒ½è¢« Ban æ‰ä¸å¯é€‰ã€‚è°ƒå’Œæ¿€æ´»æ—¶æ ¸å¿ƒç›Ÿçº¦äººæ•° +1ã€‚æš´èºé“çš®å¯ç©¿ 6 ä»¶è£…å¤‡ã€‚
 </div>
 
 <div class="layout">
   <div class="panel">
-    <h2>Ban ÃËÔ¼</h2>
+    <h2>Ban ç›Ÿçº¦</h2>
     <div class="ban-box">
-      <div class="ban-title">¹´Ñ¡Òª Ban µÄÃËÔ¼</div>
+      <div class="ban-title">å‹¾é€‰è¦ Ban çš„ç›Ÿçº¦</div>
       <div class="ban-list" id="banList"></div>
     </div>
 
-    <h2>Ñ¡Ôñ¸ÉÔ±</h2>
+    <h2>é€‰æ‹©å¹²å‘˜</h2>
     <div class="filter-box">
-      <div class="filter-title">°´ÃËÔ¼É¸Ñ¡£¨¿É¶àÑ¡£©</div>
+      <div class="filter-title">æŒ‰ç›Ÿçº¦ç­›é€‰ï¼ˆå¯å¤šé€‰ï¼‰</div>
       <div class="filter-list" id="filterList"></div>
     </div>
 
     <div class="toolbar">
-      <input type="text" id="search" placeholder="ËÑË÷¸ÉÔ±Ãû¡­">
-      <button id="clearBtn">Çå¿ÕÑ¡Ôñ</button>
-      <button id="selectAllBtn">È«Ñ¡¿ÉÑ¡</button>
+      <input type="text" id="search" placeholder="æœç´¢å¹²å‘˜åâ€¦">
+      <button id="clearBtn">æ¸…ç©ºé€‰æ‹©</button>
+      <button id="selectAllBtn">å…¨é€‰å¯é€‰</button>
     </div>
     <div id="operatorList"></div>
 
-    <h2>×°±¸Ö¸¶¨</h2>
+    <h2>è£…å¤‡æŒ‡å®š</h2>
     <div class="equip-box">
-      <div class="equip-title">ÎªÒÑÑ¡¸ÉÔ±Ñ¡Ôñ×°±¸</div>
+      <div class="equip-title">ä¸ºå·²é€‰å¹²å‘˜é€‰æ‹©è£…å¤‡</div>
       <div class="equip-list" id="equipList"></div>
-      <div class="equip-note" id="equipNote"></div>
     </div>
   </div>
 
   <div class="panel">
-    <h2>ÃËÔ¼Í³¼Æ</h2>
-    <div class="summary" id="summary">ÉĞÎ´Ñ¡Ôñ¸ÉÔ±¡£</div>
-    <div class="cov-hint">ÂÌ=ÒÑ¼¤»î£¬»Æ=Î´¼¤»î£»À¶¡¸×°¡¹±íÊ¾ÓÉ±äĞÎÍ¬¹¹Ìá¹©µÄ¹éÊô¡£µã»÷ĞĞÕ¹¿ª¡£</div>
+    <h2>ç›Ÿçº¦ç»Ÿè®¡</h2>
+    <div class="summary" id="summary">å°šæœªé€‰æ‹©å¹²å‘˜ã€‚</div>
     <div class="cov-list" id="covenantList"></div>
   </div>
 </div>
 
 <script>
-/* ========== ÃËÔ¼Êı¾İ ========== */
 const COVENANTS = [
-  {name:"Ñ×", type:"ºËĞÄ", need:3, icon:"Ñ×"},
-  {name:"Èø¶û¹±", type:"ºËĞÄ", need:3, icon:"Èø"},
-  {name:"Î¬¶àÀûÑÇ", type:"ºËĞÄ", need:3, icon:"Î¬"},
-  {name:"Ğ»À­¸ñ", type:"ºËĞÄ", need:3, icon:"Ğ»"},
-  {name:"°¢¸ê¶û", type:"ºËĞÄ", need:3, icon:"°¢"},
-  {name:"ĞğÀ­¹Å", type:"ºËĞÄ", need:3, icon:"Ğğ"},
-  {name:"¿¨Î÷Ã×¶û", type:"ºËĞÄ", need:3, icon:"¿¨"},
-  {name:"ÎÚÈøË¹", type:"ºËĞÄ", need:3, icon:"ÎÚ"},
-  {name:"ÒÁ±ÈÀûÑÇ", type:"ºËĞÄ", need:3, icon:"ÒÁ"},
-  {name:"À³ËşÄáÑÇ", type:"ºËĞÄ", need:3, icon:"À³"},
-  {name:"¾«×¼", type:"¸½¼Ó", need:2, icon:"×¼"},
-  {name:"Ñ¸½İ", type:"¸½¼Ó", need:2, icon:"Ñ¸"},
-  {name:"ÁéÇÉ", type:"¸½¼Ó", need:2, icon:"ÇÉ"},
-  {name:"¼áÊØ", type:"¸½¼Ó", need:2, icon:"ÊØ"},
-  {name:"ÖúÁ¦", type:"¸½¼Ó", need:2, icon:"Öú"},
-  {name:"Ô¶¼û", type:"¸½¼Ó", need:2, icon:"Ô¶"},
-  {name:"Ææ¼£", type:"¸½¼Ó", need:2, icon:"Ææ"},
-  {name:"Í¶×ÊÈË", type:"¸½¼Ó", need:3, icon:"Í¶"},
-  {name:"Í»Ï®", type:"¸½¼Ó", need:2, icon:"Í»"},
-  {name:"²»Çü", type:"¸½¼Ó", need:2, icon:"Çü"},
-  {name:"µ÷ºÍ", type:"¸½¼Ó", need:1, icon:"ºÍ"},
-  {name:"Ğ­·À¸ÉÔ±", type:"¸½¼Ó", need:2, icon:"Ğ­"},
-  {name:"¶ÀĞĞ", type:"¸½¼Ó", need:1, icon:"¶À"},
-  {name:"¾ø¼¼", type:"¸½¼Ó", need:2, icon:"¾ø"},
-  {name:"¾ÛºÏ", type:"¸½¼Ó", need:2, icon:"¾Û"},
-  {name:"°ÂÊõ", type:"¸½¼Ó", need:2, icon:"°Â"},
+  {name:"ç‚", type:"æ ¸å¿ƒ", need:3, icon:"ç‚"},
+  {name:"è¨å°”è´¡", type:"æ ¸å¿ƒ", need:3, icon:"è¨"},
+  {name:"ç»´å¤šåˆ©äºš", type:"æ ¸å¿ƒ", need:3, icon:"ç»´"},
+  {name:"è°¢æ‹‰æ ¼", type:"æ ¸å¿ƒ", need:3, icon:"è°¢"},
+  {name:"é˜¿æˆˆå°”", type:"æ ¸å¿ƒ", need:3, icon:"é˜¿"},
+  {name:"å™æ‹‰å¤", type:"æ ¸å¿ƒ", need:3, icon:"å™"},
+  {name:"å¡è¥¿ç±³å°”", type:"æ ¸å¿ƒ", need:3, icon:"å¡"},
+  {name:"ä¹Œè¨æ–¯", type:"æ ¸å¿ƒ", need:3, icon:"ä¹Œ"},
+  {name:"ä¼Šæ¯”åˆ©äºš", type:"æ ¸å¿ƒ", need:3, icon:"ä¼Š"},
+  {name:"è±å¡”å°¼äºš", type:"æ ¸å¿ƒ", need:3, icon:"è±"},
+  {name:"ç²¾å‡†", type:"é™„åŠ ", need:2, icon:"å‡†"},
+  {name:"è¿…æ·", type:"é™„åŠ ", need:2, icon:"è¿…"},
+  {name:"çµå·§", type:"é™„åŠ ", need:2, icon:"å·§"},
+  {name:"åšå®ˆ", type:"é™„åŠ ", need:2, icon:"å®ˆ"},
+  {name:"åŠ©åŠ›", type:"é™„åŠ ", need:2, icon:"åŠ©"},
+  {name:"è¿œè§", type:"é™„åŠ ", need:2, icon:"è¿œ"},
+  {name:"å¥‡è¿¹", type:"é™„åŠ ", need:2, icon:"å¥‡"},
+  {name:"æŠ•èµ„äºº", type:"é™„åŠ ", need:3, icon:"æŠ•"},
+  {name:"çªè¢­", type:"é™„åŠ ", need:2, icon:"çª"},
+  {name:"ä¸å±ˆ", type:"é™„åŠ ", need:2, icon:"å±ˆ"},
+  {name:"è°ƒå’Œ", type:"é™„åŠ ", need:1, icon:"å’Œ"},
+  {name:"åé˜²å¹²å‘˜", type:"é™„åŠ ", need:2, icon:"å"},
+  {name:"ç‹¬è¡Œ", type:"é™„åŠ ", need:1, icon:"ç‹¬"},
+  {name:"ç»æŠ€", type:"é™„åŠ ", need:2, icon:"ç»"},
+  {name:"èšåˆ", type:"é™„åŠ ", need:2, icon:"èš"},
+  {name:"å¥¥æœ¯", type:"é™„åŠ ", need:2, icon:"å¥¥"},
 ];
 
-const CORE_NAMES = new Set(COVENANTS.filter(c => c.type === "ºËĞÄ").map(c => c.name));
-const HARMONY_NAME = "µ÷ºÍ";
+const CORE_NAMES = new Set(COVENANTS.filter(c => c.type === "æ ¸å¿ƒ").map(c => c.name));
+const HARMONY_NAME = "è°ƒå’Œ";
 const HARMONY_NEED = 1;
 
-/* ========== ×°±¸Êı¾İ ========== */
 const EQUIPMENTS = [
-  { name:"£¨ÎŞ£©", cov:[], isMimic:false },
-  { name:"±äĞÎÍ¬¹¹Ìå", cov:[], isMimic:true },
-  { name:"Ñ×¹ú¶Ìµ¶", cov:["Ñ×"], isMimic:false },
-  { name:"Î¬Ê½ÖØ´¸ÏµÁĞ", cov:["Î¬¶àÀûÑÇ"], isMimic:false },
-  { name:"°¢¸ê¶ûÖØÈĞ", cov:["°¢¸ê¶û"], isMimic:false },
-  { name:"Èø¶û¹±Å¨²è", cov:["Èø¶û¹±"], isMimic:false },
-  { name:"ÒÁ±ÈÀûÑÇÓĞ´Ìµ¶", cov:["ÒÁ±ÈÀûÑÇ"], isMimic:false },
-  { name:"À³ËşÄáÑÇĞ¡¹Ä", cov:["À³ËşÄáÑÇ"], isMimic:false },
-  { name:"Ğ»À­¸ñ²»ÈÚ±ù", cov:["Ğ»À­¸ñ"], isMimic:false },
-  { name:"ÎÚÈøË¹ºôÎüÆ÷", cov:["ÎÚÈøË¹"], isMimic:false },
-  { name:"¿¨Î÷Ã×¶û¾º¼¼Æì", cov:["¿¨Î÷Ã×¶û"], isMimic:false },
-  { name:"ĞğÀ­¹ÅÕı×°", cov:["ĞğÀ­¹Å"], isMimic:false },
-  { name:"¾«×¼¾Ñ»÷¾µ", cov:["¾«×¼"], isMimic:false },
-  { name:"Í»Ï®ÊÖÀ×", cov:["Í»Ï®"], isMimic:false },
-  { name:"¼áÊØ¶ÜÅÆ", cov:["¼áÊØ"], isMimic:false },
-  { name:"²»Çüµ¯ÉäÆ÷", cov:["²»Çü"], isMimic:false },
-  { name:"Ñ¸½İ×÷Õ½Á¸", cov:["Ñ¸½İ"], isMimic:false },
-  { name:"ÁéÇÉÂÖÁ÷ÊÖÌ×", cov:["ÁéÇÉ"], isMimic:false },
-  { name:"°ÂÊõ·¨Õó", cov:["°ÂÊõ"], isMimic:false },
-  { name:"¾ÛºÏ¼±¾ÈÏä", cov:["¾ÛºÏ"], isMimic:false },
+  { name:"ï¼ˆæ— ï¼‰", cov:[], isMimic:false },
+  { name:"å˜å½¢åŒæ„ä½“", cov:[], isMimic:true },
+  { name:"ç‚å›½çŸ­åˆ€", cov:["ç‚"], isMimic:false },
+  { name:"ç»´å¼é‡é”¤ç³»åˆ—", cov:["ç»´å¤šåˆ©äºš"], isMimic:false },
+  { name:"é˜¿æˆˆå°”é‡åˆƒ", cov:["é˜¿æˆˆå°”"], isMimic:false },
+  { name:"è¨å°”è´¡æµ“èŒ¶", cov:["è¨å°”è´¡"], isMimic:false },
+  { name:"ä¼Šæ¯”åˆ©äºšæœ‰åˆºåˆ€", cov:["ä¼Šæ¯”åˆ©äºš"], isMimic:false },
+  { name:"è±å¡”å°¼äºšå°é¼“", cov:["è±å¡”å°¼äºš"], isMimic:false },
+  { name:"è°¢æ‹‰æ ¼ä¸èå†°", cov:["è°¢æ‹‰æ ¼"], isMimic:false },
+  { name:"ä¹Œè¨æ–¯å‘¼å¸å™¨", cov:["ä¹Œè¨æ–¯"], isMimic:false },
+  { name:"å¡è¥¿ç±³å°”ç«æŠ€æ——", cov:["å¡è¥¿ç±³å°”"], isMimic:false },
+  { name:"å™æ‹‰å¤æ­£è£…", cov:["å™æ‹‰å¤"], isMimic:false },
+  { name:"ç²¾å‡†ç‹™å‡»é•œ", cov:["ç²¾å‡†"], isMimic:false },
+  { name:"çªè¢­æ‰‹é›·", cov:["çªè¢­"], isMimic:false },
+  { name:"åšå®ˆç›¾ç‰Œ", cov:["åšå®ˆ"], isMimic:false },
+  { name:"ä¸å±ˆå¼¹å°„å™¨", cov:["ä¸å±ˆ"], isMimic:false },
+  { name:"è¿…æ·ä½œæˆ˜ç²®", cov:["è¿…æ·"], isMimic:false },
+  { name:"çµå·§è½®æµæ‰‹å¥—", cov:["çµå·§"], isMimic:false },
+  { name:"å¥¥æœ¯æ³•é˜µ", cov:["å¥¥æœ¯"], isMimic:false },
+  { name:"èšåˆæ€¥æ•‘ç®±", cov:["èšåˆ"], isMimic:false },
 ];
 
 const EQUIP_INDEX = {};
 EQUIPMENTS.forEach(e => { EQUIP_INDEX[e.name] = e; });
 
-/* ========== ¸ÉÔ±Êı¾İ ========== */
 const OPERATORS = {
-  "¢ñ": [
-    {name:"°İËÉ", cov:["Ñ×"]},
-    {name:"°¬Ë¿÷ì¶û", cov:["Èø¶û¹±","¶ÀĞĞ"]},
-    {name:"Ä½Ë¹", cov:["Î¬¶àÀûÑÇ"]},
-    {name:"½Ç·å", cov:["Ğ»À­¸ñ","¼áÊØ"]},
-    {name:"ÓÄÁéöè", cov:["°¢¸ê¶û"]},
-    {name:"À­ÆÕÀ¼µÂ", cov:["ĞğÀ­¹Å"]},
-    {name:"Ò°××", cov:["¿¨Î÷Ã×¶û","ÖúÁ¦"]},
-    {name:"ÕÛèâ", cov:["ÎÚÈøË¹","²»Çü"]},
-    {name:"ÁÒÏÄ", cov:["ÎÚÈøË¹"]},
-    {name:"Éîµå", cov:["ÒÁ±ÈÀûÑÇ"]},
-    {name:"µØÁé", cov:["À³ËşÄáÑÇ","¶ÀĞĞ"]},
-    {name:"»Òºí", cov:["¾«×¼"]},
-    {name:"ÔÉĞÇ", cov:["Ñ¸½İ"]},
-    {name:"ËªÒ¶", cov:["ÁéÇÉ"]},
-    {name:"°Ú¶ÉÈË", cov:["¼áÊØ","²»Çü"]},
-    {name:"ÏÄèİ", cov:["ÖúÁ¦"]},
-    {name:"½Ü¿Ë", cov:["Í»Ï®"]},
-    {name:"ºÖ¹û", cov:["¾ÛºÏ"]},
-    {name:"¿¨´ï", cov:["°ÂÊõ"]},
+  "â… ": [
+    {name:"æ‹œæ¾", cov:["ç‚"]}, {name:"è‰¾ä¸é»›å°”", cov:["è¨å°”è´¡","ç‹¬è¡Œ"]}, {name:"æ…•æ–¯", cov:["ç»´å¤šåˆ©äºš"]},
+    {name:"è§’å³°", cov:["è°¢æ‹‰æ ¼","åšå®ˆ"]}, {name:"å¹½çµé²¨", cov:["é˜¿æˆˆå°”"]}, {name:"æ‹‰æ™®å…°å¾·", cov:["å™æ‹‰å¤"]},
+    {name:"é‡é¬ƒ", cov:["å¡è¥¿ç±³å°”","åŠ©åŠ›"]}, {name:"æŠ˜æ¡ ", cov:["ä¹Œè¨æ–¯","ä¸å±ˆ"]}, {name:"çƒˆå¤", cov:["ä¹Œè¨æ–¯"]},
+    {name:"æ·±é›", cov:["ä¼Šæ¯”åˆ©äºš"]}, {name:"åœ°çµ", cov:["è±å¡”å°¼äºš","ç‹¬è¡Œ"]}, {name:"ç°å–‰", cov:["ç²¾å‡†"]},
+    {name:"é™¨æ˜Ÿ", cov:["è¿…æ·"]}, {name:"éœœå¶", cov:["çµå·§"]}, {name:"æ‘†æ¸¡äºº", cov:["åšå®ˆ","ä¸å±ˆ"]},
+    {name:"å¤æ ", cov:["åŠ©åŠ›"]}, {name:"æ°å…‹", cov:["çªè¢­"]}, {name:"è¤æœ", cov:["èšåˆ"]}, {name:"å¡è¾¾", cov:["å¥¥æœ¯"]}
   ],
-  "¢ò": [
-    {name:"¾Ø", cov:["Ñ×"]},
-    {name:"ÅİÅİ", cov:["Èø¶û¹±","¼áÊØ"]},
-    {name:"É¯²İ", cov:["Èø¶û¹±","¾ÛºÏ"]},
-    {name:"Miss.Christine", cov:["Î¬¶àÀûÑÇ","°ÂÊõ"]},
-    {name:"¹şÂåµÂ", cov:["Î¬¶àÀûÑÇ","Ğ»À­¸ñ"]},
-    {name:"Ñ©ÁÔ", cov:["Ğ»À­¸ñ","¾«×¼"]},
-    {name:"°²ÕÜÀ­", cov:["°¢¸ê¶û","ÖúÁ¦"]},
-    {name:"¸´×à", cov:["ĞğÀ­¹Å","À³ËşÄáÑÇ","Ææ¼£"]},
-    {name:"°ÂË¹Ëş", cov:["ĞğÀ­¹Å"]},
-    {name:"Àù", cov:["¿¨Î÷Ã×¶û","²»Çü"]},
-    {name:"ÕæÀí", cov:["ÎÚÈøË¹"]},
-    {name:"À¶¶¾", cov:["ÒÁ±ÈÀûÑÇ"]},
-    {name:"¹åÑÎ", cov:["ÒÁ±ÈÀûÑÇ","¾ÛºÏ"]},
-    {name:"ÕÛ¹â", cov:["À³ËşÄáÑÇ"]},
-    {name:"³ĞêØ¸ñÀ×ÒÁ", cov:["¾«×¼","ÁéÇÉ"]},
-    {name:"²¨µÇ¿É", cov:["Ñ¸½İ","¾ÛºÏ"]},
-    {name:"ÔÆ¼£", cov:["ÁéÇÉ","Ææ¼£"]},
-    {name:"ÉßÍÀÏä", cov:["¼áÊØ"]},
-    {name:"ĞÇÔ´", cov:["ÖúÁ¦"]},
-    {name:"¶ÉÇÅ", cov:["Ô¶¼û"]},
-    {name:"ĞÇ¼«", cov:["Ææ¼£"]},
-    {name:"ÎıÈË", cov:["Í¶×ÊÈË"]},
-    {name:"ÖıÌú", cov:["Í»Ï®"]},
-    {name:"Ñç", cov:["²»Çü"]},
+  "â…¡": [
+    {name:"çŸ©", cov:["ç‚"]}, {name:"æ³¡æ³¡", cov:["è¨å°”è´¡","åšå®ˆ"]}, {name:"èè‰", cov:["è¨å°”è´¡","èšåˆ"]},
+    {name:"Miss.Christine", cov:["ç»´å¤šåˆ©äºš","å¥¥æœ¯"]}, {name:"å“ˆæ´›å¾·", cov:["ç»´å¤šåˆ©äºš","è°¢æ‹‰æ ¼"]}, {name:"é›ªçŒ", cov:["è°¢æ‹‰æ ¼","ç²¾å‡†"]},
+    {name:"å®‰å“²æ‹‰", cov:["é˜¿æˆˆå°”","åŠ©åŠ›"]}, {name:"å¤å¥", cov:["å™æ‹‰å¤","è±å¡”å°¼äºš","å¥‡è¿¹"]}, {name:"å¥¥æ–¯å¡”", cov:["å™æ‹‰å¤"]},
+    {name:"ç ¾", cov:["å¡è¥¿ç±³å°”","ä¸å±ˆ"]}, {name:"çœŸç†", cov:["ä¹Œè¨æ–¯"]}, {name:"è“æ¯’", cov:["ä¼Šæ¯”åˆ©äºš"]},
+    {name:"ç‘°ç›", cov:["ä¼Šæ¯”åˆ©äºš","èšåˆ"]}, {name:"æŠ˜å…‰", cov:["è±å¡”å°¼äºš"]}, {name:"æ‰¿æ›¦æ ¼é›·ä¼Š", cov:["ç²¾å‡†","çµå·§"]},
+    {name:"æ³¢ç™»å¯", cov:["è¿…æ·","èšåˆ"]}, {name:"äº‘è¿¹", cov:["çµå·§","å¥‡è¿¹"]}, {name:"è›‡å± ç®±", cov:["åšå®ˆ"]},
+    {name:"æ˜Ÿæº", cov:["åŠ©åŠ›"]}, {name:"æ¸¡æ¡¥", cov:["è¿œè§"]}, {name:"æ˜Ÿæ", cov:["å¥‡è¿¹"]}, {name:"é”¡äºº", cov:["æŠ•èµ„äºº"]},
+    {name:"é“¸é“", cov:["çªè¢­"]}, {name:"å®´", cov:["ä¸å±ˆ"]}
   ],
-  "¢ó": [
-    {name:"·çĞõ", cov:["Ñ×","¾ÛºÏ"]},
-    {name:"ÎÚÓĞ", cov:["Ñ×"]},
-    {name:"¿¨ÄùÀû°²", cov:["Èø¶û¹±","À³ËşÄáÑÇ","Ñ¸½İ"]},
-    {name:"ÖÁ¼ò", cov:["Èø¶û¹±"]},
-    {name:"Ë®µÆĞÄ", cov:["Î¬¶àÀûÑÇ","ÁéÇÉ","¶ÀĞĞ"]},
-    {name:"¿­ÉªÁÕ", cov:["Î¬¶àÀûÑÇ","Ô¶¼û"]},
-    {name:"¼«¹â", cov:["Ğ»À­¸ñ"]},
-    {name:"Ò®À­", cov:["Ğ»À­¸ñ","Ææ¼£"]},
-    {name:"³õÑ©", cov:["Ğ»À­¸ñ","Ğ­·À¸ÉÔ±"]},
-    {name:"ÉîÑ²", cov:["°¢¸ê¶û","¼áÊØ"]},
-    {name:"Ë¹¿¨µÙ", cov:["°¢¸ê¶û","Í»Ï®"]},
-    {name:"ÈÌ¶¬", cov:["ĞğÀ­¹Å","Ñ¸½İ"]},
-    {name:"ËÅÒ¹", cov:["ĞğÀ­¹Å","¾«×¼"]},
-    {name:"è¦¹â", cov:["¿¨Î÷Ã×¶û","Í»Ï®"]},
-    {name:"ÀúÕóÈñÇ¹·Ò", cov:["¿¨Î÷Ã×¶û","Ô¶¼û"]},
-    {name:"ÎÚà±", cov:["ÎÚÈøË¹","¾ÛºÏ"]},
-    {name:"°Â¶û¼Ñ", cov:["ÎÚÈøË¹","ÁéÇÉ"]},
-    {name:"º£Ä­", cov:["ÒÁ±ÈÀûÑÇ","²»Çü"]},
-    {name:"ÂÃ¹Ç", cov:["ÒÁ±ÈÀûÑÇ","¾«×¼"]},
-    {name:"³µ¶ûÄá", cov:["À³ËşÄáÑÇ","¼áÊØ"]},
-    {name:"¿ÕÏÒ", cov:["¾«×¼","Ô¶¼û"]},
-    {name:"Çàè×", cov:["Ñ¸½İ","¼áÊØ"]},
-    {name:"ÂŞ±ÈÇ‰Ëş", cov:["¼áÊØ","ÖúÁ¦"]},
-    {name:"¼ªĞÇ", cov:["Ææ¼£"]},
-    {name:"ÒÁÉ£", cov:["Í»Ï®","°ÂÊõ"]},
-    {name:"·çÍè", cov:["²»Çü"]},
-    {name:"ÃËÔ¼¡¤¸¨Öú¸ÉÔ±", cov:["µ÷ºÍ"]},
+  "â…¢": [
+    {name:"é£çµ®", cov:["ç‚","èšåˆ"]}, {name:"ä¹Œæœ‰", cov:["ç‚"]}, {name:"å¡æ¶…åˆ©å®‰", cov:["è¨å°”è´¡","è±å¡”å°¼äºš","è¿…æ·"]},
+    {name:"è‡³ç®€", cov:["è¨å°”è´¡"]}, {name:"æ°´ç¯å¿ƒ", cov:["ç»´å¤šåˆ©äºš","çµå·§","ç‹¬è¡Œ"]}, {name:"å‡¯ç‘Ÿç³", cov:["ç»´å¤šåˆ©äºš","è¿œè§"]},
+    {name:"æå…‰", cov:["è°¢æ‹‰æ ¼"]}, {name:"è€¶æ‹‰", cov:["è°¢æ‹‰æ ¼","å¥‡è¿¹"]}, {name:"åˆé›ª", cov:["è°¢æ‹‰æ ¼","åé˜²å¹²å‘˜"]},
+    {name:"æ·±å·¡", cov:["é˜¿æˆˆå°”","åšå®ˆ"]}, {name:"æ–¯å¡è’‚", cov:["é˜¿æˆˆå°”","çªè¢­"]}, {name:"å¿å†¬", cov:["å™æ‹‰å¤","è¿…æ·"]},
+    {name:"ä¼ºå¤œ", cov:["å™æ‹‰å¤","ç²¾å‡†"]}, {name:"ç‘•å…‰", cov:["å¡è¥¿ç±³å°”","çªè¢­"]}, {name:"å†é˜µé”æªèŠ¬", cov:["å¡è¥¿ç±³å°”","è¿œè§"]},
+    {name:"ä¹Œå•¾", cov:["ä¹Œè¨æ–¯","èšåˆ"]}, {name:"å¥¥å°”ä½³", cov:["ä¹Œè¨æ–¯","çµå·§"]}, {name:"æµ·æ²«", cov:["ä¼Šæ¯”åˆ©äºš","ä¸å±ˆ"]},
+    {name:"æ—…éª¨", cov:["ä¼Šæ¯”åˆ©äºš","ç²¾å‡†"]}, {name:"è½¦å°”å°¼", cov:["è±å¡”å°¼äºš","åšå®ˆ"]}, {name:"ç©ºå¼¦", cov:["ç²¾å‡†","è¿œè§"]},
+    {name:"é’æ³", cov:["è¿…æ·","åšå®ˆ"]}, {name:"ç½—æ¯”èˆå¡”", cov:["åšå®ˆ","åŠ©åŠ›"]}, {name:"å‰æ˜Ÿ", cov:["å¥‡è¿¹"]},
+    {name:"ä¼Šæ¡‘", cov:["çªè¢­","å¥¥æœ¯"]}, {name:"é£ä¸¸", cov:["ä¸å±ˆ"]}, {name:"ç›Ÿçº¦Â·è¾…åŠ©å¹²å‘˜", cov:["è°ƒå’Œ"]}
   ],
-  "¢ô": [
-    {name:"Óà", cov:["Ñ×","¼áÊØ"]},
-    {name:"³ğ°×", cov:["Ñ×","ÁéÇÉ"]},
-    {name:"É­òÅ", cov:["Èø¶û¹±","²»Çü"]},
-    {name:"Òì¿Í", cov:["Èø¶û¹±","°ÂÊõ"]},
-    {name:"µÓ»ğ½ÜÎ÷¿¨", cov:["Î¬¶àÀûÑÇ","¼áÊØ"]},
-    {name:"°×Ìú", cov:["Î¬¶àÀûÑÇ","ÖúÁ¦"]},
-    {name:"ÁéÖª", cov:["Ğ»À­¸ñ","Ñ¸½İ"]},
-    {name:"¹éäéÓÄÁéöè", cov:["°¢¸ê¶û","²»Çü"]},
-    {name:"Ë®ÔÂ", cov:["°¢¸ê¶û","ÁéÇÉ"]},
-    {name:"³â×ï", cov:["ĞğÀ­¹Å","²»Çü"]},
-    {name:"°²½àÀòÄÈ", cov:["ĞğÀ­¹Å","Ææ¼£"]},
-    {name:"Ô¶ÑÀ", cov:["¿¨Î÷Ã×¶û","¾«×¼"]},
-    {name:"Âê¶÷ÄÉ", cov:["¿¨Î÷Ã×¶û"]},
-    {name:"ºÕÀ­¸ñ", cov:["ÎÚÈøË¹","Í»Ï®"]},
-    {name:"Î¬ÒÁ", cov:["ÎÚÈøË¹","°ÂÊõ"]},
-    {name:"ÎÂµÙ", cov:["ÒÁ±ÈÀûÑÇ","¼áÊØ"]},
-    {name:"Á÷Ã÷", cov:["ÒÁ±ÈÀûÑÇ","¾ÛºÏ"]},
-    {name:"ºÚ¼ü", cov:["À³ËşÄáÑÇ","¾«×¼"]},
-    {name:"°¬ÑÅ·¨À­", cov:["À³ËşÄáÑÇ","°ÂÊõ"]},
-    {name:"»ô¶ûº£ÑÅ", cov:["¾«×¼","°ÂÊõ"]},
-    {name:"»ª·¨ÁÕ", cov:["ÁéÇÉ","¾ÛºÏ"]},
-    {name:"º®Ì´", cov:["Ô¶¼û"]},
-    {name:"É½", cov:["Í¶×ÊÈË"]},
-    {name:"ºÕµÂÀ×", cov:["Í»Ï®"]},
-    {name:"Ò¹İº", cov:["Ğ­·À¸ÉÔ±","¾ÛºÏ"]},
-    {name:"W", cov:["Ñ¸½İ"]},
-    {name:"´ãÓğºÕÄ¬", cov:["ÖúÁ¦"]},
+  "â…£": [
+    {name:"ä½™", cov:["ç‚","åšå®ˆ"]}, {name:"ä»‡ç™½", cov:["ç‚","çµå·§"]}, {name:"æ£®èšº", cov:["è¨å°”è´¡","ä¸å±ˆ"]},
+    {name:"å¼‚å®¢", cov:["è¨å°”è´¡","å¥¥æœ¯"]}, {name:"æ¶¤ç«æ°è¥¿å¡", cov:["ç»´å¤šåˆ©äºš","åšå®ˆ"]}, {name:"ç™½é“", cov:["ç»´å¤šåˆ©äºš","åŠ©åŠ›"]},
+    {name:"çµçŸ¥", cov:["è°¢æ‹‰æ ¼","è¿…æ·"]}, {name:"å½’æºŸå¹½çµé²¨", cov:["é˜¿æˆˆå°”","ä¸å±ˆ"]}, {name:"æ°´æœˆ", cov:["é˜¿æˆˆå°”","çµå·§"]},
+    {name:"æ–¥ç½ª", cov:["å™æ‹‰å¤","ä¸å±ˆ"]}, {name:"å®‰æ´è‰å¨œ", cov:["å™æ‹‰å¤","å¥‡è¿¹"]}, {name:"è¿œç‰™", cov:["å¡è¥¿ç±³å°”","ç²¾å‡†"]},
+    {name:"ç›æ©çº³", cov:["å¡è¥¿ç±³å°”"]}, {name:"èµ«æ‹‰æ ¼", cov:["ä¹Œè¨æ–¯","çªè¢­"]}, {name:"ç»´ä¼Š", cov:["ä¹Œè¨æ–¯","å¥¥æœ¯"]},
+    {name:"æ¸©è’‚", cov:["ä¼Šæ¯”åˆ©äºš","åšå®ˆ"]}, {name:"æµæ˜", cov:["ä¼Šæ¯”åˆ©äºš","èšåˆ"]}, {name:"é»‘é”®", cov:["è±å¡”å°¼äºš","ç²¾å‡†"]},
+    {name:"è‰¾é›…æ³•æ‹‰", cov:["è±å¡”å°¼äºš","å¥¥æœ¯"]}, {name:"éœå°”æµ·é›…", cov:["ç²¾å‡†","å¥¥æœ¯"]}, {name:"åæ³•ç³", cov:["çµå·§","èšåˆ"]},
+    {name:"å¯’æª€", cov:["è¿œè§"]}, {name:"å±±", cov:["æŠ•èµ„äºº"]}, {name:"èµ«å¾·é›·", cov:["çªè¢­"]},
+    {name:"å¤œèº", cov:["åé˜²å¹²å‘˜","èšåˆ"]}, {name:"W", cov:["è¿…æ·"]}, {name:"æ·¬ç¾½èµ«é»˜", cov:["åŠ©åŠ›"]}
   ],
-  "¢õ": [
-    {name:"Êò", cov:["Ñ×","Ô¶¼û"]},
-    {name:"ÀÏÀğ", cov:["Ñ×","Í¶×ÊÈË"]},
-    {name:"ÅåÅå", cov:["Èø¶û¹±","ÁéÇÉ"]},
-    {name:"ºèÑ©", cov:["Èø¶û¹±","¾«×¼"]},
-    {name:"Î¬ÄÈ¡¤Î¬¶àÀûÑÇ", cov:["Î¬¶àÀûÑÇ","Ææ¼£"]},
-    {name:"Ê¥ñö³õÑ©", cov:["Ğ»À­¸ñ","°ÂÊõ"]},
-    {name:"ÁİÓùÒø»Ò", cov:["Ğ»À­¸ñ","ÁéÇÉ","Í¶×ÊÈË"]},
-    {name:"¸èÀÙµÙæ«", cov:["°¢¸ê¶û"]},
-    {name:"ÎÚ¶û±È°²", cov:["°¢¸ê¶û"]},
-    {name:"ÁåÀ¼", cov:["ĞğÀ­¹Å"]},
-    {name:"±´ÂåÄÚ", cov:["ĞğÀ­¹Å","Í»Ï®"]},
-    {name:"Ş±Ş±°²ÄÈ", cov:["¿¨Î÷Ã×¶û","À³ËşÄáÑÇ","°ÂÊõ"]},
-    {name:"ÑæÎ²", cov:["¿¨Î÷Ã×¶û","Ñ¸½İ"]},
-    {name:"Å­³±Áİ¶¬", cov:["ÎÚÈøË¹","Ææ¼£"]},
-    {name:"¶³ºÓ", cov:["ÎÚÈøË¹","Ñ¸½İ"]},
-    {name:"°¬ÀöÄİ", cov:["ÒÁ±ÈÀûÑÇ"]},
-    {name:"¼¬´Ì", cov:["ÒÁ±ÈÀûÑÇ","°ÂÊõ"]},
-    {name:"´¿½ı°¬ÑÅ·¨À­", cov:["À³ËşÄáÑÇ","Ô¶¼û","¾ÛºÏ"]},
-    {name:"ÃÔµüÏã", cov:["¾«×¼","ÖúÁ¦"]},
-    {name:"ÒşµÂÀ´Ï£", cov:["ÁéÇÉ","²»Çü"]},
-    {name:"ÈûÀ×æ«", cov:["¼áÊØ","Ğ­·À¸ÉÔ±"]},
-    {name:"¿ÉÂ¶Ï£¶û", cov:["Í¶×ÊÈË"]},
-    {name:"Mon3tr", cov:["Ğ­·À¸ÉÔ±"]},
-    {name:"°¢Ã×æ«", cov:["Ææ¼£"]},
-    {name:"Ëİ¹âĞÇÔ´", cov:["°ÂÊõ"]},
-    {name:"±©ÔêÌúÆ¤", cov:["Ğ­·À¸ÉÔ±"], isBaozao:true},
+  "â…¤": [
+    {name:"é»", cov:["ç‚","è¿œè§"]}, {name:"è€é²¤", cov:["ç‚","æŠ•èµ„äºº"]}, {name:"ä½©ä½©", cov:["è¨å°”è´¡","çµå·§"]},
+    {name:"é¸¿é›ª", cov:["è¨å°”è´¡","ç²¾å‡†"]}, {name:"ç»´å¨œÂ·ç»´å¤šåˆ©äºš", cov:["ç»´å¤šåˆ©äºš","å¥‡è¿¹"]}, {name:"åœ£è†åˆé›ª", cov:["è°¢æ‹‰æ ¼","å¥¥æœ¯"]},
+    {name:"å‡›å¾¡é“¶ç°", cov:["è°¢æ‹‰æ ¼","çµå·§","æŠ•èµ„äºº"]}, {name:"æ­Œè•¾è’‚å¨…", cov:["é˜¿æˆˆå°”"]}, {name:"ä¹Œå°”æ¯”å®‰", cov:["é˜¿æˆˆå°”"]},
+    {name:"é“ƒå…°", cov:["å™æ‹‰å¤"]}, {name:"è´æ´›å†…", cov:["å™æ‹‰å¤","çªè¢­"]}, {name:"è–‡è–‡å®‰å¨œ", cov:["å¡è¥¿ç±³å°”","è±å¡”å°¼äºš","å¥¥æœ¯"]},
+    {name:"ç„°å°¾", cov:["å¡è¥¿ç±³å°”","è¿…æ·"]}, {name:"æ€’æ½®å‡›å†¬", cov:["ä¹Œè¨æ–¯","å¥‡è¿¹"]}, {name:"å†»æ²³", cov:["ä¹Œè¨æ–¯","è¿…æ·"]},
+    {name:"è‰¾ä¸½å¦®", cov:["ä¼Šæ¯”åˆ©äºš"]}, {name:"æ£˜åˆº", cov:["ä¼Šæ¯”åˆ©äºš","å¥¥æœ¯"]}, {name:"çº¯çƒ¬è‰¾é›…æ³•æ‹‰", cov:["è±å¡”å°¼äºš","è¿œè§","èšåˆ"]},
+    {name:"è¿·è¿­é¦™", cov:["ç²¾å‡†","åŠ©åŠ›"]}, {name:"éšå¾·æ¥å¸Œ", cov:["çµå·§","ä¸å±ˆ"]}, {name:"å¡é›·å¨…", cov:["åšå®ˆ","åé˜²å¹²å‘˜"]},
+    {name:"å¯éœ²å¸Œå°”", cov:["æŠ•èµ„äºº"]}, {name:"Mon3tr", cov:["åé˜²å¹²å‘˜"]}, {name:"é˜¿ç±³å¨…", cov:["å¥‡è¿¹"]},
+    {name:"æº¯å…‰æ˜Ÿæº", cov:["å¥¥æœ¯"]}, {name:"æš´èºé“çš®", cov:["åé˜²å¹²å‘˜"], isBaozao:true}
   ],
-  "¢ö": [
-    {name:"Öò»Í", cov:["Ñ×","Î¬¶àÀûÑÇ","Ñ¸½İ"]},
-    {name:"Ï¦", cov:["Ñ×","°ÂÊõ"]},
-    {name:"ÕæÑÔ", cov:["Èø¶û¹±"]},
-    {name:"¾ÆÉñ", cov:["Î¬¶àÀûÑÇ"]},
-    {name:"ïµ", cov:["Ğ»À­¸ñ","¿¨Î÷Ã×¶û","À³ËşÄáÑÇ"]},
-    {name:"×ÇĞÄË¹¿¨µÙ", cov:["°¢¸ê¶û","¾ÛºÏ"]},
-    {name:"¿ËÀ³ÃÅÉ¯", cov:["°¢¸ê¶û"]},
-    {name:"»ÄÎßÀ­ÆÕÀ¼µÂ", cov:["ĞğÀ­¹Å"]},
-    {name:"Ò«ÆïÊ¿ÁÙ¹â", cov:["¿¨Î÷Ã×¶û","Í»Ï®"]},
-    {name:"ËşÂ¶À­", cov:["ÎÚÈøË¹","Ğ­·À¸ÉÔ±","°ÂÊõ"]},
-    {name:"ÒıĞÇ¼¬´Ì", cov:["ÒÁ±ÈÀûÑÇ","Ñ¸½İ"]},
-    {name:"Âß¸÷Ë¹", cov:["Ô¶¼û","°ÂÊõ"]},
-    {name:"ÀÙçÑ°²", cov:["¾«×¼"]},
-    {name:"ÄİÜ½", cov:["Ñ¸½İ","Ô¶¼û"]},
-    {name:"ÅÁÀ­Ë¹", cov:["ÁéÇÉ","ÖúÁ¦"]},
-    {name:"»úĞµÊ¦", cov:["¼áÊØ","Ğ­·À¸ÉÔ±"]},
-    {name:"çÑ¶ûÈüË¼", cov:["Ğ­·À¸ÉÔ±"]},
-    {name:"Ò£", cov:["Ææ¼£","¾ÛºÏ"]},
-    {name:"Ê·¶ûÌØ¶û", cov:["Í»Ï®","²»Çü"]},
-    {name:"Ä§Íõ", cov:["µ÷ºÍ"]},
-  ],
+  "â…¥": [
+    {name:"çƒ›ç…Œ", cov:["ç‚","ç»´å¤šåˆ©äºš","è¿…æ·"]}, {name:"å¤•", cov:["ç‚","å¥¥æœ¯"]}, {name:"çœŸè¨€", cov:["è¨å°”è´¡"]},
+    {name:"é…’ç¥", cov:["ç»´å¤šåˆ©äºš"]}, {name:"é”", cov:["è°¢æ‹‰æ ¼","å¡è¥¿ç±³å°”","è±å¡”å°¼äºš"]}, {name:"æµŠå¿ƒæ–¯å¡è’‚", cov:["é˜¿æˆˆå°”","èšåˆ"]},
+    {name:"å…‹è±é—¨è", cov:["é˜¿æˆˆå°”"]}, {name:"è’èŠœæ‹‰æ™®å…°å¾·", cov:["å™æ‹‰å¤"]}, {name:"è€€éª‘å£«ä¸´å…‰", cov:["å¡è¥¿ç±³å°”","çªè¢­"]},
+    {name:"å¡”éœ²æ‹‰", cov:["ä¹Œè¨æ–¯","åé˜²å¹²å‘˜","å¥¥æœ¯"]}, {name:"å¼•æ˜Ÿæ£˜åˆº", cov:["ä¼Šæ¯”åˆ©äºš","è¿…æ·"]}, {name:"é€»å„æ–¯", cov:["è¿œè§","å¥¥æœ¯"]},
+    {name:"è•¾ç¼ªå®‰", cov:["ç²¾å‡†"]}, {name:"å¦®èŠ™", cov:["è¿…æ·","è¿œè§"]}, {name:"å¸•æ‹‰æ–¯", cov:["çµå·§","åŠ©åŠ›"]},
+    {name:"æœºæ¢°å¸ˆ", cov:["åšå®ˆ","åé˜²å¹²å‘˜"]}, {name:"ç¼ªå°”èµ›æ€", cov:["åé˜²å¹²å‘˜"]}, {name:"é¥", cov:["å¥‡è¿¹","èšåˆ"]},
+    {name:"å²å°”ç‰¹å°”", cov:["çªè¢­","ä¸å±ˆ"]}, {name:"é­”ç‹", cov:["è°ƒå’Œ"]}
+  ]
 };
 
-const SPECIAL_MEMBERS = {
-  "µ÷ºÍ": ["Î×ÒÛ£¨·ÖÖ§Õ¼Î»£©"],
-  "Ğ­·À¸ÉÔ±": ["²»ÇüÕß£¨·ÖÖ§Õ¼Î»£©"],
-};
+const SPECIAL_MEMBERS = {"è°ƒå’Œ": ["å·«å½¹ï¼ˆåˆ†æ”¯å ä½ï¼‰"], "åé˜²å¹²å‘˜": ["ä¸å±ˆè€…ï¼ˆåˆ†æ”¯å ä½ï¼‰"]};
 
-/* ========== ×´Ì¬ ========== */
 const selected = new Set();
 const banned = new Set();
 const expanded = new Set();
 const equipments = {};
 const filterCovs = new Set();
-const GRADE_ORDER = ["¢ñ","¢ò","¢ó","¢ô","¢õ","¢ö"];
+const GRADE_ORDER = ["â… ","â…¡","â…¢","â…£","â…¤","â…¥"];
 
 const OP_INDEX = {};
 GRADE_ORDER.forEach(g => {
@@ -460,41 +347,30 @@ GRADE_ORDER.forEach(g => {
 
 function keyOf(grade, name){ return grade + "|" + name; }
 
-/* ===== Ban ¹æÔò ===== */
-function getCoreCovenants(op){
-  return op.cov.filter(c => CORE_NAMES.has(c));
-}
+function getCoreCovenants(op){ return op.cov.filter(c => CORE_NAMES.has(c)); }
 function getFirstCoreCovenant(op){
   const cores = getCoreCovenants(op);
   return cores.length > 0 ? cores[0] : null;
 }
 function isOperatorDisabled(op){
   const firstCore = getFirstCoreCovenant(op);
-  if(firstCore){
-    return banned.has(firstCore);
-  }else{
-    return op.cov.length > 0 && op.cov.every(c => banned.has(c));
-  }
+  if(firstCore){ return banned.has(firstCore); }
+  else { return op.cov.length > 0 && op.cov.every(c => banned.has(c)); }
 }
 function disabledReason(op){
   const firstCore = getFirstCoreCovenant(op);
-  if(firstCore && banned.has(firstCore)){
-    return `µÚÒ»ºËĞÄÃËÔ¼¡¾${firstCore}¡¿ÒÑ±» Ban£¬ÎŞ·¨Ñ¡Ôñ`;
-  }
-  if(!firstCore && op.cov.length > 0 && op.cov.every(c => banned.has(c))){
-    return `ËùÊôÃËÔ¼¡¾${op.cov.join("¡¢")}¡¿¾ùÒÑ±» Ban£¬ÎŞ·¨Ñ¡Ôñ`;
-  }
+  if(firstCore && banned.has(firstCore)) return `ç¬¬ä¸€æ ¸å¿ƒç›Ÿçº¦ã€${firstCore}ã€‘å·²è¢« Banï¼Œæ— æ³•é€‰æ‹©`;
+  if(!firstCore && op.cov.length > 0 && op.cov.every(c => banned.has(c))) return `æ‰€å±ç›Ÿçº¦ã€${op.cov.join("ã€")}ã€‘å‡å·²è¢« Banï¼Œæ— æ³•é€‰æ‹©`;
   return "";
 }
 
-/* ===== ×°±¸Ìá¹©ÃËÔ¼ ===== */
 function getEquipmentCov(key){
   const eqs = equipments[key] || [];
   const covs = new Set();
   let mimicCount = 0;
   const others = [];
   eqs.forEach(name => {
-    if(name === "£¨ÎŞ£©" || !name) return;
+    if(name === "ï¼ˆæ— ï¼‰" || !name) return;
     const e = EQUIP_INDEX[name];
     if(e) {
       if(e.isMimic) mimicCount++;
@@ -507,17 +383,13 @@ function getEquipmentCov(key){
   return [...covs];
 }
 
-/* ========== Ban ÁĞ±í ========== */
 function renderBanList(){
   const box = document.getElementById("banList");
   box.innerHTML = "";
   COVENANTS.forEach(c => {
     const label = document.createElement("label");
     label.className = "ban-chip" + (banned.has(c.name) ? " on" : "");
-    label.innerHTML = `
-      <input type="checkbox" ${banned.has(c.name) ? "checked" : ""}>
-      <span>${c.name}</span>
-    `;
+    label.innerHTML = `<input type="checkbox" ${banned.has(c.name) ? "checked" : ""}><span>${c.name}</span>`;
     const cb = label.querySelector("input");
     cb.addEventListener("change", () => {
       if(cb.checked) banned.add(c.name);
@@ -529,16 +401,12 @@ function renderBanList(){
           delete equipments[k];
         }
       });
-      renderBanList();
-      renderOperators();
-      renderEquipList();
-      renderCovenants();
+      renderBanList(); renderOperators(); renderEquipList(); renderCovenants();
     });
     box.appendChild(label);
   });
 }
 
-/* ========== ÃËÔ¼É¸Ñ¡À¸ ========== */
 function renderFilterList() {
   const box = document.getElementById("filterList");
   box.innerHTML = "";
@@ -547,19 +415,14 @@ function renderFilterList() {
     chip.className = "filter-chip" + (filterCovs.has(c.name) ? " on" : "");
     chip.textContent = c.name;
     chip.addEventListener("click", () => {
-      if (filterCovs.has(c.name)) {
-        filterCovs.delete(c.name);
-      } else {
-        filterCovs.add(c.name);
-      }
-      renderFilterList();
-      renderOperators();
+      if (filterCovs.has(c.name)) filterCovs.delete(c.name);
+      else filterCovs.add(c.name);
+      renderFilterList(); renderOperators();
     });
     box.appendChild(chip);
   });
 }
 
-/* ========== ¸ÉÔ±ÁĞ±í ========== */
 function renderOperators(){
   const box = document.getElementById("operatorList");
   box.innerHTML = "";
@@ -584,12 +447,7 @@ function renderOperators(){
 
     const block = document.createElement("div");
     block.className = "grade-block";
-
-    const title = document.createElement("div");
-    title.className = "grade-title";
-    title.textContent = grade + " ½×";
-    block.appendChild(title);
-
+    block.innerHTML = `<div class="grade-title">${grade} é˜¶</div>`;
     const chips = document.createElement("div");
     chips.className = "chips";
 
@@ -597,26 +455,15 @@ function renderOperators(){
       const k = keyOf(grade, op.name);
       const disabled = isOperatorDisabled(op);
       const chip = document.createElement("div");
-      chip.className = "chip"
-        + (selected.has(k) ? " selected" : "")
-        + (disabled ? " disabled" : "");
-      chip.dataset.key = k;
+      chip.className = "chip" + (selected.has(k) ? " selected" : "") + (disabled ? " disabled" : "");
       chip.innerHTML = `${op.name}<span class="g">${grade}</span>`;
-      chip.title = disabled ? disabledReason(op) : op.cov.join(" / ");
-
-      if(disabled){
-        chip.addEventListener("click", e => e.stopPropagation());
-      }else{
+      
+      if(!disabled){
         chip.addEventListener("click", () => {
-          if(selected.has(k)) {
-            selected.delete(k);
-            delete equipments[k];
-          } else {
-            selected.add(k);
-          }
+          if(selected.has(k)) { selected.delete(k); delete equipments[k]; }
+          else { selected.add(k); }
           chip.classList.toggle("selected");
-          renderEquipList();
-          renderCovenants();
+          renderEquipList(); renderCovenants();
         });
       }
       chips.appendChild(chip);
@@ -626,20 +473,15 @@ function renderOperators(){
     box.appendChild(block);
   });
 
-  if(box.children.length === 0){
-    box.innerHTML = '<div class="empty">Ã»ÓĞÆ¥ÅäµÄ¸ÉÔ±¡£</div>';
-  }
+  if(box.children.length === 0) box.innerHTML = '<div class="empty">æ²¡æœ‰åŒ¹é…çš„å¹²å‘˜ã€‚</div>';
 }
 
-/* ========== ×°±¸ÁĞ±í ========== */
 function renderEquipList(){
   const box = document.getElementById("equipList");
-  const note = document.getElementById("equipNote");
   box.innerHTML = "";
-  note.textContent = "";
 
   if(selected.size === 0){
-    box.innerHTML = '<div class="equip-empty">ÇëÏÈÑ¡Ôñ¸ÉÔ±¡£</div>';
+    box.innerHTML = '<div class="equip-empty">è¯·å…ˆé€‰æ‹©å¹²å‘˜ã€‚</div>';
     return;
   }
 
@@ -655,7 +497,6 @@ function renderEquipList(){
     if(!op) return;
     
     const maxEquip = op.isBaozao ? 6 : 2;
-
     const row = document.createElement("div");
     row.className = "equip-row";
 
@@ -664,237 +505,22 @@ function renderEquipList(){
     
     const name = document.createElement("div");
     name.className = "equip-op";
-    name.innerHTML = `${op.name}<span class="g">${op.grade}</span>`
-      + (op.isBaozao ? `<span class="sp">6¸ñ</span>` : "");
+    name.innerHTML = `${op.name}<span class="g">${op.grade}</span>` + (op.isBaozao ? `<span class="sp">6æ ¼</span>` : "");
     
     const clr = document.createElement("button");
     clr.className = "equip-clear";
-    clr.textContent = "Çå³ı";
+    clr.textContent = "æ¸…é™¤";
     clr.addEventListener("click", () => {
-      equipments[k] = Array(maxEquip).fill("£¨ÎŞ£©");
-      renderEquipList();
-      renderCovenants();
+      equipments[k] = Array(maxEquip).fill("ï¼ˆæ— ï¼‰");
+      renderEquipList(); renderCovenants();
     });
     
-    header.appendChild(name);
-    header.appendChild(clr);
-    row.appendChild(header);
+    header.appendChild(name); header.appendChild(clr); row.appendChild(header);
 
     const selectsDiv = document.createElement("div");
     selectsDiv.className = "equip-selects" + (op.isBaozao ? " multi" : "");
     
-    if (!equipments[k]) equipments[k] = Array(maxEquip).fill("£¨ÎŞ£©");
-    while(equipments[k].length < maxEquip) equipments[k].push("£¨ÎŞ£©");
+    if (!equipments[k]) equipments[k] = Array(maxEquip).fill("ï¼ˆæ— ï¼‰");
+    while(equipments[k].length < maxEquip) equipments[k].push("ï¼ˆæ— ï¼‰");
     
-    for (let i = 0; i < maxEquip; i++) {
-        const sel = document.createElement("select");
-        sel.className = "equip-select";
-        EQUIPMENTS.forEach(eq => {
-          const opt = document.createElement("option");
-          opt.value = eq.name;
-          opt.textContent = eq.name;
-          if(equipments[k][i] === eq.name) opt.selected = true;
-          sel.appendChild(opt);
-        });
-        
-        sel.addEventListener("change", () => {
-            equipments[k][i] = sel.value;
-            renderEquipList();
-            renderCovenants();
-        });
-        selectsDiv.appendChild(sel);
-    }
-
-    row.appendChild(selectsDiv);
-    box.appendChild(row);
-  });
-  
-  note.textContent = "ÆÕÍ¨¸ÉÔ± 2 ¼ş£¬±©ÔêÌúÆ¤ 6 ¼ş¡£ĞèÒª¡°±äĞÎÍ¬¹¹Ìå¡±²ÅÄÜÈÃÆäËû×°±¸Ìá¹©ÃËÔ¼¡£";
-}
-
-/* ========== ÃËÔ¼½á¹û ========== */
-function renderCovenants(){
-  const listBox = document.getElementById("covenantList");
-  const summary = document.getElementById("summary");
-  listBox.innerHTML = "";
-
-  const baseCounts = {};
-  const members = {};
-  COVENANTS.forEach(c => { baseCounts[c.name] = 0; members[c.name] = []; });
-
-  selected.forEach(k => {
-    const op = OP_INDEX[k];
-    if(!op) return;
-
-    op.cov.forEach(cn => {
-      if(!(cn in baseCounts)) return;
-      baseCounts[cn]++;
-      members[cn].push({name:op.name, grade:op.grade, fromEquip:false});
-    });
-
-    const eqCov = getEquipmentCov(k);
-    eqCov.forEach(cn => {
-      if(!(cn in baseCounts)) return;
-      baseCounts[cn]++;
-      members[cn].push({name:op.name, grade:op.grade, fromEquip:true, equipName:"±äĞÎÍ¬¹¹"});
-    });
-  });
-
-  const harmonyBanned = banned.has(HARMONY_NAME);
-  const harmonyActive = !harmonyBanned && baseCounts[HARMONY_NAME] >= HARMONY_NEED;
-  const coreBonus = harmonyActive ? 1 : 0;
-
-  const counts = {};
-  COVENANTS.forEach(c => {
-    counts[c.name] = baseCounts[c.name] + (CORE_NAMES.has(c.name) ? coreBonus : 0);
-  });
-
-  const totalSelected = selected.size;
-  const activeCount = COVENANTS.filter(c =>
-    !banned.has(c.name) && c.need != null && counts[c.name] >= c.need
-  ).length;
-
-  if(totalSelected === 0){
-    summary.innerHTML = `ÉĞÎ´Ñ¡Ôñ¸ÉÔ±¡£${banned.size ? ` ÒÑ Ban ${banned.size} ¸öÃËÔ¼¡£` : ""}`;
-  }else{
-    summary.innerHTML = `ÒÑÑ¡ <b>${totalSelected}</b> Ãû¸ÉÔ±£»ÒÑ¼¤»î <b>${activeCount}</b> ¸öÃËÔ¼¡£`
-      + (harmonyActive ? ` ºËĞÄ +1¡£` : "")
-      + (banned.size ? ` ÒÑ Ban <b>${banned.size}</b> ¸ö¡£` : "");
-  }
-
-  const sorted = [...COVENANTS].sort((a,b) => {
-    const ba = banned.has(a.name), bb = banned.has(b.name);
-    if(ba !== bb) return ba ? 1 : -1;
-    return score(b) - score(a);
-  });
-
-  function score(c){
-    const n = counts[c.name];
-    if(c.need == null) return n > 0 ? 1 : 0;
-    if(n >= c.need) return 2;
-    if(n > 0) return 1;
-    return 0;
-  }
-
-  sorted.forEach(c => {
-    const n = counts[c.name];
-    const base = baseCounts[c.name];
-    const isCore = CORE_NAMES.has(c.name);
-    const bonus = isCore ? coreBonus : 0;
-    const isBanned = banned.has(c.name);
-    const active = !isBanned && c.need != null && n >= c.need;
-    const partial = !isBanned && !active && n > 0;
-    const isExpanded = expanded.has(c.name);
-
-    const row = document.createElement("div");
-    row.className = "cov-row"
-      + (isBanned ? " banned" : active ? " active" : partial ? " partial" : "")
-      + (isExpanded ? " expanded" : "");
-
-    const needText = c.need == null ? "¡ª" : c.need;
-    let badge = "";
-    if(isBanned){
-      badge = '<span class="badge ban">Ban</span>';
-    }else if(c.need != null){
-      badge = active
-        ? '<span class="badge on">¼¤»î</span>'
-        : '<span class="badge off">Î´¼¤»î</span>';
-    }
-    const bonusTag = bonus > 0
-      ? `<span class="bonus-tag">+${bonus}</span>`
-      : "";
-    const eqCount = (members[c.name] || []).filter(m => m.fromEquip).length;
-    const eqTag = eqCount > 0
-      ? `<span class="equip-tag">×°${eqCount}</span>`
-      : "";
-
-    row.innerHTML = `
-      <div class="cov-icon">${c.icon}</div>
-      <span class="cov-name">${c.name}</span>
-      <span class="cov-spacer"></span>
-      ${eqTag}
-      ${bonusTag}
-      <span class="cov-count"><b>${n}</b>/${needText}</span>
-      ${badge}
-    `;
-
-    row.addEventListener("click", () => {
-      if(expanded.has(c.name)) expanded.delete(c.name);
-      else expanded.add(c.name);
-      renderCovenants();
-    });
-
-    listBox.appendChild(row);
-
-    const memberArr = [...(members[c.name] || [])];
-    (SPECIAL_MEMBERS[c.name] || []).forEach(s => memberArr.push({name:s, grade:"¡ª"}));
-
-    const mem = document.createElement("div");
-    mem.className = "cov-members";
-    if(memberArr.length > 0){
-      mem.innerHTML = memberArr.map(m => {
-        const isHit = m.grade !== "¡ª" && selected.has(keyOf(m.grade, m.name));
-        const label = m.grade === "¡ª" ? m.name : `${m.name}(${m.grade})`;
-        const baseLabel = isHit ? `<span class="hit">${label}</span>` : label;
-        if(m.fromEquip){
-          return `${baseLabel}<span class="eq">[±äĞÎ]</span>`;
-        }
-        return baseLabel;
-      }).join("¡¢")
-      + (bonus > 0 ? ` <span class="hit">(+${bonus})</span>` : "");
-    }else{
-      mem.textContent = bonus > 0 ? `ÎŞ¸ÉÔ± (+${bonus})` : "ÎŞ¸ÉÔ±";
-    }
-    listBox.appendChild(mem);
-  });
-}
-
-/* ========== ÊÂ¼ş ========== */
-document.getElementById("search").addEventListener("input", () => {
-  renderOperators();
-});
-
-document.getElementById("clearBtn").addEventListener("click", () => {
-  selected.clear();
-  for(const k in equipments) delete equipments[k];
-  document.getElementById("search").value = "";
-  filterCovs.clear();
-  renderFilterList();
-  renderOperators();
-  renderEquipList();
-  renderCovenants();
-});
-
-document.getElementById("selectAllBtn").addEventListener("click", () => {
-  const f = document.getElementById("search").value.trim().toLowerCase();
-  GRADE_ORDER.forEach(g => {
-    OPERATORS[g].forEach(op => {
-      if(isOperatorDisabled(op)) return;
-      let match = true;
-      if(f) {
-        const matchName = op.name.toLowerCase().includes(f);
-        const matchCov = op.cov.some(c => c.toLowerCase().includes(f));
-        if(!matchName && !matchCov) match = false;
-      }
-      if(match && filterCovs.size > 0) {
-        for(let cov of filterCovs) {
-          if(!op.cov.includes(cov)) match = false;
-        }
-      }
-      if(match) selected.add(keyOf(g, op.name));
-    });
-  });
-  renderOperators();
-  renderEquipList();
-  renderCovenants();
-});
-
-/* ========== ³õÊ¼»¯ ========== */
-renderBanList();
-renderFilterList();
-renderOperators();
-renderEquipList();
-renderCovenants();
-</script>
-</body>
-</html>
+    for (let i = 0; i <
