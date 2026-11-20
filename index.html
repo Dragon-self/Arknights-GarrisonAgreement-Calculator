@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿html
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -41,19 +42,45 @@
     border-bottom:1px dashed var(--line);padding-bottom:4px;
   }
   .chips{display:flex;flex-wrap:wrap;gap:6px}
+  
+  /* 干员标签样式 */
   .chip{
+    position: relative;
     background:var(--panel2);border:1px solid var(--line);border-radius:999px;
     padding:4px 10px;font-size:13px;cursor:pointer;user-select:none;
     transition:all .12s ease;
   }
   .chip:hover{border-color:var(--accent2)}
-  .chip.selected{background:#1f6feb33;border-color:var(--accent2);color:#fff}
+  .chip.selected{background:#1f6feb33;border-color:var(--accent2);color:#fff; padding-right: 24px;}
   .chip.disabled{
     opacity:.35;cursor:not-allowed;border-style:dashed;text-decoration:line-through;
   }
   .chip.disabled:hover{border-color:var(--line)}
   .chip .g{color:var(--muted);font-size:11px;margin-left:4px}
   .chip.selected .g{color:#9ecbff}
+  
+  /* 右上角的减号按钮 */
+  .chip-minus {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background: var(--danger);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 14px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  }
+  .chip-minus:hover {
+    background: #ff6b6b;
+  }
+  
   .empty{color:var(--muted);font-size:13px;padding:12px 0}
   .summary{font-size:13px;color:var(--muted);margin-bottom:10px}
   .summary b{color:var(--text)}
@@ -65,24 +92,27 @@
   .ban-title{font-size:13px;font-weight:600;margin-bottom:8px;color:var(--danger)}
   .ban-list{display:flex;flex-wrap:wrap;gap:6px}
   .ban-chip{
-    display:flex;align-items:center;gap:6px;background:var(--panel);
-    border:1px solid var(--line);border-radius:999px;padding:3px 10px;
-    font-size:12px;cursor:pointer;user-select:none;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:3px 8px;
+    font-size:12px;
+    cursor:pointer;
+    user-select:none;
+    transition:all .1s;
   }
   .ban-chip:hover{border-color:var(--danger)}
   .ban-chip.on{background:#f8514922;border-color:var(--danger);color:#ffb3ad}
-  .ban-chip input{accent-color:var(--danger);margin:0}
 
-  /* 盟约筛选栏 */
   .filter-box {
     background: var(--panel2); border: 1px dashed var(--line); border-radius: 8px;
     padding: 10px; margin-bottom: 12px;
   }
-  .filter-title{font-size:13px;font-weight:600;margin-bottom:8px;color:var(--accent)}
+  .filter-title{font-size:12px;font-weight:600;margin-bottom:8px;color:var(--accent)}
   .filter-list{display:flex;flex-wrap:wrap;gap:6px;}
   .filter-chip{
     background:var(--panel); border:1px solid var(--line); border-radius:6px;
-    padding:2px 8px; font-size:12px; cursor:pointer; user-select:none; transition:all .1s;
+    padding:3px 8px; font-size:12px; cursor:pointer; user-select:none; transition:all .1s;
   }
   .filter-chip:hover{border-color:var(--accent);}
   .filter-chip.on{background:#3fb95033; border-color:var(--accent); color:#fff;}
@@ -91,12 +121,10 @@
   .cov-row{
     display:flex;align-items:center;gap:8px;
     background:var(--panel2);border:1px solid var(--line);border-radius:8px;
-    padding:6px 10px;font-size:13px;cursor:pointer;
+    padding:6px 10px;font-size:13px;cursor:default;
     transition:border-color .12s ease;
   }
   .cov-row.active{border-color:var(--accent);background:#3fb95014}
-  .cov-row.partial{border-color:var(--warn);background:#d2992214}
-  .cov-row.banned{border-color:var(--danger);background:#f8514914;opacity:.7}
   .cov-icon{
     width:22px;height:22px;flex:0 0 22px;border-radius:6px;
     display:flex;align-items:center;justify-content:center;
@@ -104,8 +132,6 @@
     background:var(--panel);border:1px solid var(--line);color:var(--muted);
   }
   .cov-row.active .cov-icon{color:var(--accent);border-color:var(--accent)}
-  .cov-row.partial .cov-icon{color:var(--warn);border-color:var(--warn)}
-  .cov-row.banned .cov-icon{color:var(--danger);border-color:var(--danger)}
   .cov-name{font-weight:600;white-space:nowrap}
   .cov-type{
     font-size:10px;color:var(--muted);border:1px solid var(--line);
@@ -118,7 +144,6 @@
   }
   .cov-count b{font-size:13px;color:var(--text)}
   .cov-row.active .cov-count b{color:var(--accent)}
-  .cov-row.partial .cov-count b{color:var(--warn)}
   .bonus-tag{
     font-size:10px;color:var(--accent);border:1px solid var(--accent);
     border-radius:5px;padding:0 4px;line-height:16px;white-space:nowrap;
@@ -129,35 +154,56 @@
   }
   .badge{font-size:10px;padding:1px 5px;border-radius:5px;border:1px solid;white-space:nowrap}
   .badge.on{color:var(--accent);border-color:var(--accent)}
-  .badge.off{color:var(--muted);border-color:var(--line)}
-  .badge.ban{color:var(--danger);border-color:var(--danger)}
-  .cov-members{
-    display:none;font-size:11px;color:var(--muted);
-    padding:2px 0 4px 30px;line-height:1.6;
-  }
-  .cov-row.expanded + .cov-members{display:block}
-  .cov-members .hit{color:#9ecbff}
-  .cov-members .eq{color:var(--accent2)}
-  .cov-row:hover{border-color:var(--accent2)}
-  .cov-row.banned:hover{border-color:var(--danger)}
-  .cov-hint{font-size:11px;color:var(--muted);margin-bottom:8px}
 
-  /* 装备区 */
   .equip-box{
     background:var(--panel2);border:1px dashed var(--line);border-radius:8px;
     padding:10px;margin-bottom:14px;
   }
   .equip-title{font-size:13px;font-weight:600;margin-bottom:8px;color:var(--accent2)}
   .equip-list{display:flex;flex-direction:column;gap:6px}
+  
   .equip-row{
-    display:flex;align-items:flex-start; gap:8px; font-size:12px;
+    display:flex; flex-direction:column; gap:6px; font-size:12px;
     background:var(--panel); border:1px solid var(--line); border-radius:8px;
-    padding:6px 8px;
+    padding:8px 10px; position: relative;
   }
-  .equip-op{flex:0 0 auto;font-weight:600;white-space:nowrap;min-width:90px; margin-top: 3px;}
+  
+  .equip-header {
+    display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap;
+    padding-right: 20px;
+  }
+  .equip-op{flex:0 0 auto;font-weight:600;white-space:nowrap; color: var(--text); margin-top: 1px;}
   .equip-op .g{color:var(--muted);font-size:10px;margin-left:3px}
   .equip-op .sp{font-size:10px;color:var(--warn);margin-left:4px;border:1px solid var(--warn);padding:0 3px;border-radius:4px;}
   
+  .equip-covs{flex:1; color:var(--accent2); font-size:12px; line-height: 1.4; word-break: break-all; margin-top: 1px;}
+
+  .equip-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: var(--muted);
+    font-size: 14px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    line-height: 1;
+  }
+  .equip-remove:hover {
+    color: var(--danger);
+    background: #f8514922;
+  }
+
+  .equip-controls {
+    display: flex; align-items: center; gap: 8px;
+  }
   .equip-selects{
     display:flex; flex-wrap:wrap; gap:6px; flex:1; min-width:0;
   }
@@ -165,34 +211,26 @@
     flex:1 1 calc(50% - 6px); min-width:80px; background:var(--panel2); color:var(--text);
     border:1px solid var(--line); border-radius:6px; padding:3px 6px; font-size:12px;
   }
-  /* 暴躁铁皮6个装备时，下拉框稍微变窄 */
   .equip-selects.multi .equip-select {
     flex:1 1 calc(33.3% - 6px);
   }
   .equip-select:focus{outline:none;border-color:var(--accent2)}
   
-  .equip-clear{
-    flex:0 0 auto;font-size:11px;padding:4px 6px;border-radius:6px; margin-top: 1px;
-    background:var(--panel2);border:1px solid var(--line);color:var(--muted);
-    cursor:pointer;
-  }
-  .equip-clear:hover{color:var(--danger);border-color:var(--danger)}
   .equip-empty{font-size:12px;color:var(--muted);padding:4px 0}
-  .equip-note{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
 </style>
 </head>
 <body>
 
 <h1>PRTS 盟约激活计算器</h1>
 <div class="sub">
-  核心盟约被 Ban 时，第一核心盟约为该盟约的干员不可选。无核心盟约的干员需所有所属盟约都被 Ban 才不可选。调和激活时核心盟约人数 +1。每名干员最多 2 件装备（暴躁铁皮 6 件），仅装备“变形同构体”时，其他装备才赋予额外盟约。
+  支持重复选择同名干员，但盟约人数统计时，同名干员只计算 1 次（不重复计数）。
 </div>
 
 <div class="layout">
   <div class="panel">
     <h2>Ban 盟约</h2>
     <div class="ban-box">
-      <div class="ban-title">勾选要 Ban 的盟约</div>
+      <div class="ban-title">点击切换要 Ban 的盟约（仅限制干员选择）</div>
       <div class="ban-list" id="banList"></div>
     </div>
 
@@ -203,713 +241,405 @@
     </div>
 
     <div class="toolbar">
-      <input type="text" id="search" placeholder="搜索干员名…">
-      <button id="clearBtn">清空选择</button>
-      <button id="selectAllBtn">全选可选</button>
+      <input type="text" id="search" placeholder="搜索干员名或盟约…">
     </div>
     <div id="operatorList"></div>
 
     <h2>装备指定</h2>
     <div class="equip-box">
-      <div class="equip-title">为已选干员选择装备</div>
+      <div class="equip-title">为已选干员选择装备（可重复添加）</div>
       <div class="equip-list" id="equipList"></div>
-      <div class="equip-note" id="equipNote"></div>
     </div>
   </div>
 
   <div class="panel">
     <h2>盟约统计</h2>
     <div class="summary" id="summary">尚未选择干员。</div>
-    <div class="cov-hint">绿=已激活，黄=有人数未激活，红=已 Ban；「+1调和」表示调和激活后核心盟约额外 +1；蓝色「装」表示由“变形同构体+其他装备”提供的盟约归属。点击行展开所属干员。</div>
     <div class="cov-list" id="covenantList"></div>
   </div>
 </div>
 
 <script>
-/* ========== 盟约数据 ========== */
-const COVENANTS = [
-  {name:"炎", type:"核心", need:3, icon:"炎"},
-  {name:"萨尔贡", type:"核心", need:3, icon:"萨"},
-  {name:"维多利亚", type:"核心", need:3, icon:"维"},
-  {name:"谢拉格", type:"核心", need:3, icon:"谢"},
-  {name:"阿戈尔", type:"核心", need:3, icon:"阿"},
-  {name:"叙拉古", type:"核心", need:3, icon:"叙"},
-  {name:"卡西米尔", type:"核心", need:3, icon:"卡"},
-  {name:"乌萨斯", type:"核心", need:3, icon:"乌"},
-  {name:"伊比利亚", type:"核心", need:3, icon:"伊"},
-  {name:"莱塔尼亚", type:"核心", need:3, icon:"莱"},
-  {name:"精准", type:"附加", need:2, icon:"准"},
-  {name:"迅捷", type:"附加", need:2, icon:"迅"},
-  {name:"灵巧", type:"附加", need:2, icon:"巧"},
-  {name:"坚守", type:"附加", need:2, icon:"守"},
-  {name:"助力", type:"附加", need:2, icon:"助"},
-  {name:"远见", type:"附加", need:2, icon:"远"},
-  {name:"奇迹", type:"附加", need:2, icon:"奇"},
-  {name:"投资人", type:"附加", need:3, icon:"投"},
-  {name:"突袭", type:"附加", need:2, icon:"突"},
-  {name:"不屈", type:"附加", need:2, icon:"屈"},
-  {name:"调和", type:"附加", need:1, icon:"和"},
-  {name:"协防干员", type:"附加", need:2, icon:"协"},
-  {name:"独行", type:"附加", need:1, icon:"独"},
-  {name:"绝技", type:"附加", need:2, icon:"绝"},
-  {name:"聚合", type:"附加", need:2, icon:"聚"},
-  {name:"奥术", type:"附加", need:2, icon:"奥"},
+const COVS = [
+  {n:"炎",t:"核心",r:3,icon:"炎"},{n:"萨尔贡",t:"核心",r:3,icon:"萨"},{n:"维多利亚",t:"核心",r:3,icon:"维"},{n:"谢拉格",t:"核心",r:3,icon:"谢"},
+  {n:"阿戈尔",t:"核心",r:3,icon:"阿"},{n:"叙拉古",t:"核心",r:3,icon:"叙"},{n:"卡西米尔",t:"核心",r:3,icon:"卡"},{n:"乌萨斯",t:"核心",r:3,icon:"乌"},
+  {n:"伊比利亚",t:"核心",r:3,icon:"伊"},{n:"莱塔尼亚",t:"核心",r:3,icon:"莱"},
+  {n:"精准",t:"附加",r:2,icon:"准"},{n:"迅捷",t:"附加",r:2,icon:"迅"},{n:"灵巧",t:"附加",r:2,icon:"巧"},{n:"坚守",t:"附加",r:2,icon:"守"},
+  {n:"助力",t:"附加",r:2,icon:"助"},{n:"远见",t:"附加",r:2,icon:"远"},{n:"奇迹",t:"附加",r:2,icon:"奇"},{n:"投资人",t:"附加",r:3,icon:"投"},
+  {n:"突袭",t:"附加",r:2,icon:"突"},{n:"不屈",t:"附加",r:2,icon:"屈"},{n:"调和",t:"附加",r:1,icon:"和"},{n:"协防干员",t:"附加",r:2,icon:"协"},
+  {n:"独行",t:"附加",r:1,icon:"独"},{n:"绝技",t:"附加",r:2,icon:"绝"},{n:"聚合",t:"附加",r:2,icon:"聚"},{n:"奥术",t:"附加",r:2,icon:"奥"}
 ];
 
-const CORE_NAMES = new Set(COVENANTS.filter(c => c.type === "核心").map(c => c.name));
-const HARMONY_NAME = "调和";
-const HARMONY_NEED = 1;
+const CORES = new Set(COVS.filter(c=>c.t==="核心").map(c=>c.n));
 
-/* ========== 装备数据 ========== */
-const EQUIPMENTS = [
-  { name:"（无）", cov:[], isMimic:false },
-  { name:"变形同构体", cov:[], isMimic:true },
-  { name:"炎国短刀", cov:["炎"], isMimic:false },
-  { name:"维式重锤系列", cov:["维多利亚"], isMimic:false },
-  { name:"阿戈尔重刃", cov:["阿戈尔"], isMimic:false },
-  { name:"萨尔贡浓茶", cov:["萨尔贡"], isMimic:false },
-  { name:"伊比利亚有刺刀", cov:["伊比利亚"], isMimic:false },
-  { name:"莱塔尼亚小鼓", cov:["莱塔尼亚"], isMimic:false },
-  { name:"谢拉格不融冰", cov:["谢拉格"], isMimic:false },
-  { name:"乌萨斯呼吸器", cov:["乌萨斯"], isMimic:false },
-  { name:"卡西米尔竞技旗", cov:["卡西米尔"], isMimic:false },
-  { name:"叙拉古正装", cov:["叙拉古"], isMimic:false },
-  { name:"精准狙击镜", cov:["精准"], isMimic:false },
-  { name:"突袭手雷", cov:["突袭"], isMimic:false },
-  { name:"坚守盾牌", cov:["坚守"], isMimic:false },
-  { name:"不屈弹射器", cov:["不屈"], isMimic:false },
-  { name:"迅捷作战粮", cov:["迅捷"], isMimic:false },
-  { name:"灵巧轮流手套", cov:["灵巧"], isMimic:false },
-  { name:"奥术法阵", cov:["奥术"], isMimic:false },
-  { name:"聚合急救箱", cov:["聚合"], isMimic:false },
+const EQUIPS = ["（无）","变形同构体","炎国短刀","维式重锤系列","阿戈尔重刃","萨尔贡浓茶","伊比利亚有刺刀","莱塔尼亚小鼓","谢拉格不融冰","乌萨斯呼吸器","卡西米尔竞技旗","叙拉古正装","精准狙击镜","突袭手雷","坚守盾牌","不屈弹射器","迅捷作战粮","灵巧轮流手套","奥术法阵","聚合急救箱"];
+
+const EQ_MAP = {
+  "炎国短刀":"炎", "维式重锤系列":"维多利亚", "阿戈尔重刃":"阿戈尔", "萨尔贡浓茶":"萨尔贡",
+  "伊比利亚有刺刀":"伊比利亚", "莱塔尼亚小鼓":"莱塔尼亚", "谢拉格不融冰":"谢拉格", "乌萨斯呼吸器":"乌萨斯",
+  "卡西米尔竞技旗":"卡西米尔", "叙拉古正装":"叙拉古", "精准狙击镜":"精准", "突袭手雷":"突袭",
+  "坚守盾牌":"坚守", "不屈弹射器":"不屈", "迅捷作战粮":"迅捷", "灵巧轮流手套":"灵巧",
+  "奥术法阵":"奥术", "聚合急救箱":"聚合"
+};
+
+const OPS = [
+  {n:"拜松",g:"Ⅰ",c:["炎"]},{n:"艾丝黛尔",g:"Ⅰ",c:["萨尔贡","独行"]},{n:"慕斯",g:"Ⅰ",c:["维多利亚"]},
+  {n:"角峰",g:"Ⅰ",c:["谢拉格","坚守"]},{n:"幽灵鲨",g:"Ⅰ",c:["阿戈尔"]},{n:"拉普兰德",g:"Ⅰ",c:["叙拉古"]},
+  {n:"野鬃",g:"Ⅰ",c:["卡西米尔","助力"]},{n:"折桠",g:"Ⅰ",c:["乌萨斯","不屈"]},{n:"烈夏",g:"Ⅰ",c:["乌萨斯"]},
+  {n:"深靛",g:"Ⅰ",c:["伊比利亚"]},{n:"地灵",g:"Ⅰ",c:["莱塔尼亚","独行"]},{n:"灰喉",g:"Ⅰ",c:["精准"]},
+  {n:"陨星",g:"Ⅰ",c:["迅捷"]},{n:"霜叶",g:"Ⅰ",c:["灵巧"]},{n:"摆渡人",g:"Ⅰ",c:["坚守","不屈"]},
+  {n:"夏栎",g:"Ⅰ",c:["助力"]},{n:"杰克",g:"Ⅰ",c:["突袭"]},{n:"褐果",g:"Ⅰ",c:["聚合"]},{n:"卡达",g:"Ⅰ",c:["奥术"]},
+
+  {n:"矩",g:"Ⅱ",c:["炎"]},{n:"泡泡",g:"Ⅱ",c:["萨尔贡","坚守"]},{n:"莎草",g:"Ⅱ",c:["萨尔贡","聚合"]},
+  {n:"Miss.Christine",g:"Ⅱ",c:["维多利亚","奥术"]},{n:"哈洛德",g:"Ⅱ",c:["维多利亚","谢拉格"]},{n:"雪猎",g:"Ⅱ",c:["谢拉格","精准"]},
+  {n:"安哲拉",g:"Ⅱ",c:["阿戈尔","助力"]},{n:"复奏",g:"Ⅱ",c:["叙拉古","莱塔尼亚","奇迹"]},{n:"奥斯塔",g:"Ⅱ",c:["叙拉古"]},
+  {n:"砾",g:"Ⅱ",c:["卡西米尔","不屈"]},{n:"真理",g:"Ⅱ",c:["乌萨斯"]},{n:"蓝毒",g:"Ⅱ",c:["伊比利亚"]},
+  {n:"瑰盐",g:"Ⅱ",c:["伊比利亚","聚合"]},{n:"折光",g:"Ⅱ",c:["莱塔尼亚"]},{n:"承曦格雷伊",g:"Ⅱ",c:["精准","灵巧"]},
+  {n:"波登可",g:"Ⅱ",c:["迅捷","聚合"]},{n:"云迹",g:"Ⅱ",c:["灵巧","奇迹"]},{n:"蛇屠箱",g:"Ⅱ",c:["坚守"]},
+  {n:"星源",g:"Ⅱ",c:["助力"]},{n:"渡桥",g:"Ⅱ",c:["远见"]},{n:"星极",g:"Ⅱ",c:["奇迹"]},{n:"锡人",g:"Ⅱ",c:["投资人"]},
+  {n:"铸铁",g:"Ⅱ",c:["突袭"]},{n:"宴",g:"Ⅱ",c:["不屈"]},
+
+  {n:"风絮",g:"Ⅲ",c:["炎","聚合"]},{n:"乌有",g:"Ⅲ",c:["炎"]},{n:"卡涅利安",g:"Ⅲ",c:["萨尔贡","莱塔尼亚","迅捷"]},
+  {n:"至简",g:"Ⅲ",c:["萨尔贡"]},{n:"水灯心",g:"Ⅲ",c:["维多利亚","灵巧","独行"]},{n:"凯瑟琳",g:"Ⅲ",c:["维多利亚","远见"]},
+  {n:"极光",g:"Ⅲ",c:["谢拉格"]},{n:"耶拉",g:"Ⅲ",c:["谢拉格","奇迹"]},{n:"初雪",g:"Ⅲ",c:["谢拉格","协防干员"]},
+  {n:"深巡",g:"Ⅲ",c:["阿戈尔","坚守"]},{n:"斯卡蒂",g:"Ⅲ",c:["阿戈尔","突袭"]},{n:"忍冬",g:"Ⅲ",c:["叙拉古","迅捷"]},
+  {n:"伺夜",g:"Ⅲ",c:["叙拉古","精准"]},{n:"瑕光",g:"Ⅲ",c:["卡西米尔","突袭"]},{n:"历阵锐枪芬",g:"Ⅲ",c:["卡西米尔","远见"]},
+  {n:"乌啾",g:"Ⅲ",c:["乌萨斯","聚合"]},{n:"奥尔佳",g:"Ⅲ",c:["乌萨斯","灵巧"]},{n:"海沫",g:"Ⅲ",c:["伊比利亚","不屈"]},
+  {n:"旅骨",g:"Ⅲ",c:["伊比利亚","精准"]},{n:"车尔尼",g:"Ⅲ",c:["莱塔尼亚","坚守"]},{n:"空弦",g:"Ⅲ",c:["精准","远见"]},
+  {n:"青枳",g:"Ⅲ",c:["迅捷","坚守"]},{n:"罗比菈塔",g:"Ⅲ",c:["坚守","助力"]},{n:"吉星",g:"Ⅲ",c:["奇迹"]},
+  {n:"伊桑",g:"Ⅲ",c:["突袭","奥术"]},{n:"风丸",g:"Ⅲ",c:["不屈"]},{n:"盟约·辅助干员",g:"Ⅲ",c:["调和"]},
+
+  {n:"余",g:"Ⅳ",c:["炎","坚守"]},{n:"仇白",g:"Ⅳ",c:["炎","灵巧"]},{n:"森蚺",g:"Ⅳ",c:["萨尔贡","不屈"]},
+  {n:"异客",g:"Ⅳ",c:["萨尔贡","奥术"]},{n:"涤火杰西卡",g:"Ⅳ",c:["维多利亚","坚守"]},{n:"白铁",g:"Ⅳ",c:["维多利亚","助力"]},
+  {n:"灵知",g:"Ⅳ",c:["谢拉格","迅捷"]},{n:"归溟幽灵鲨",g:"Ⅳ",c:["阿戈尔","不屈"]},{n:"水月",g:"Ⅳ",c:["阿戈尔","灵巧"]},
+  {n:"斥罪",g:"Ⅳ",c:["叙拉古","不屈"]},{n:"安洁莉娜",g:"Ⅳ",c:["叙拉古","奇迹"]},{n:"远牙",g:"Ⅳ",c:["卡西米尔","精准"]},
+  {n:"玛恩纳",g:"Ⅳ",c:["卡西米尔"]},{n:"赫拉格",g:"Ⅳ",c:["乌萨斯","突袭"]},{n:"维伊",g:"Ⅳ",c:["乌萨斯","奥术"]},
+  {n:"温蒂",g:"Ⅳ",c:["伊比利亚","坚守"]},{n:"流明",g:"Ⅳ",c:["伊比利亚","聚合"]},{n:"黑键",g:"Ⅳ",c:["莱塔尼亚","精准"]},
+  {n:"艾雅法拉",g:"Ⅳ",c:["莱塔尼亚","奥术"]},{n:"霍尔海雅",g:"Ⅳ",c:["精准","奥术"]},{n:"华法琳",g:"Ⅳ",c:["灵巧","聚合"]},
+  {n:"寒檀",g:"Ⅳ",c:["远见"]},{n:"山",g:"Ⅳ",c:["投资人"]},{n:"赫德雷",g:"Ⅳ",c:["突袭"]},
+  {n:"夜莺",g:"Ⅳ",c:["协防干员","聚合"]},{n:"W",g:"Ⅳ",c:["迅捷"]},{n:"淬羽赫默",g:"Ⅳ",c:["助力"]},
+
+  {n:"黍",g:"Ⅴ",c:["炎","远见"]},{n:"老鲤",g:"Ⅴ",c:["炎","投资人"]},{n:"佩佩",g:"Ⅴ",c:["萨尔贡","灵巧"]},
+  {n:"鸿雪",g:"Ⅴ",c:["萨尔贡","精准"]},{n:"维娜·维多利亚",g:"Ⅴ",c:["维多利亚","奇迹"]},{n:"圣聆初雪",g:"Ⅴ",c:["谢拉格","奥术"]},
+  {n:"凛御银灰",g:"Ⅴ",c:["谢拉格","灵巧","投资人"]},{n:"歌蕾蒂娅",g:"Ⅴ",c:["阿戈尔"]},{n:"乌尔比安",g:"Ⅴ",c:["阿戈尔"]},
+  {n:"铃兰",g:"Ⅴ",c:["叙拉古"]},{n:"贝洛内",g:"Ⅴ",c:["叙拉古","突袭"]},{n:"薇薇安娜",g:"Ⅴ",c:["卡西米尔","莱塔尼亚","奥术"]},
+  {n:"焰尾",g:"Ⅴ",c:["卡西米尔","迅捷"]},{n:"怒潮凛冬",g:"Ⅴ",c:["乌萨斯","奇迹"]},{n:"冻河",g:"Ⅴ",c:["乌萨斯","迅捷"]},
+  {n:"艾丽妮",g:"Ⅴ",c:["伊比利亚"]},{n:"棘刺",g:"Ⅴ",c:["伊比利亚","奥术"]},{n:"纯烬艾雅法拉",g:"Ⅴ",c:["莱塔尼亚","远见","聚合"]},
+  {n:"迷迭香",g:"Ⅴ",c:["精准","助力"]},{n:"隐德来希",g:"Ⅴ",c:["灵巧","不屈"]},{n:"塞雷娅",g:"Ⅴ",c:["坚守","协防干员"]},
+  {n:"可露希尔",g:"Ⅴ",c:["投资人"]},{n:"Mon3tr",g:"Ⅴ",c:["协防干员"]},{n:"阿米娅",g:"Ⅴ",c:["奇迹"]},
+  {n:"溯光星源",g:"Ⅴ",c:["奥术"]},{n:"暴躁铁皮",g:"Ⅴ",c:["协防干员"],special:"6格"},
+
+  {n:"烛煌",g:"Ⅵ",c:["炎","维多利亚","迅捷"]},{n:"夕",g:"Ⅵ",c:["炎","奥术"]},{n:"真言",g:"Ⅵ",c:["萨尔贡"]},
+  {n:"酒神",g:"Ⅵ",c:["维多利亚"]},{n:"锏",g:"Ⅵ",c:["谢拉格","卡西米尔","莱塔尼亚"]},{n:"浊心斯卡蒂",g:"Ⅵ",c:["阿戈尔","聚合"]},
+  {n:"克莱门莎",g:"Ⅵ",c:["阿戈尔"]},{n:"荒芜拉普兰德",g:"Ⅵ",c:["叙拉古"]},{n:"耀骑士临光",g:"Ⅵ",c:["卡西米尔","突袭"]},
+  {n:"塔露拉",g:"Ⅵ",c:["乌萨斯","协防干员","奥术"]},{n:"引星棘刺",g:"Ⅵ",c:["伊比利亚","迅捷"]},{n:"逻各斯",g:"Ⅵ",c:["远见","奥术"]},
+  {n:"蕾缪安",g:"Ⅵ",c:["精准"]},{n:"妮芙",g:"Ⅵ",c:["迅捷","远见"]},{n:"帕拉斯",g:"Ⅵ",c:["灵巧","助力"]},
+  {n:"机械师",g:"Ⅵ",c:["坚守","协防干员"]},{n:"缪尔赛思",g:"Ⅵ",c:["协防干员"]},{n:"遥",g:"Ⅵ",c:["奇迹","聚合"]},
+  {n:"史尔特尔",g:"Ⅵ",c:["突袭","不屈"]},{n:"魔王",g:"Ⅵ",c:["调和"]}
 ];
 
-const EQUIP_INDEX = {};
-EQUIPMENTS.forEach(e => { EQUIP_INDEX[e.name] = e; });
-
-/* ========== 干员数据 ========== */
-const OPERATORS = {
-  "Ⅰ": [
-    {name:"拜松", cov:["炎"]},
-    {name:"艾丝黛尔", cov:["萨尔贡","独行"]},
-    {name:"慕斯", cov:["维多利亚"]},
-    {name:"角峰", cov:["谢拉格","坚守"]},
-    {name:"幽灵鲨", cov:["阿戈尔"]},
-    {name:"拉普兰德", cov:["叙拉古"]},
-    {name:"野鬃", cov:["卡西米尔","助力"]},
-    {name:"折桠", cov:["乌萨斯","不屈"]},
-    {name:"烈夏", cov:["乌萨斯"]},
-    {name:"深靛", cov:["伊比利亚"]},
-    {name:"地灵", cov:["莱塔尼亚","独行"]},
-    {name:"灰喉", cov:["精准"]},
-    {name:"陨星", cov:["迅捷"]},
-    {name:"霜叶", cov:["灵巧"]},
-    {name:"摆渡人", cov:["坚守","不屈"]},
-    {name:"夏栎", cov:["助力"]},
-    {name:"杰克", cov:["突袭"]},
-    {name:"褐果", cov:["聚合"]},
-    {name:"卡达", cov:["奥术"]},
-  ],
-  "Ⅱ": [
-    {name:"矩", cov:["炎"]},
-    {name:"泡泡", cov:["萨尔贡","坚守"]},
-    {name:"莎草", cov:["萨尔贡","聚合"]},
-    {name:"Miss.Christine", cov:["维多利亚","奥术"]},
-    {name:"哈洛德", cov:["维多利亚","谢拉格"]},
-    {name:"雪猎", cov:["谢拉格","精准"]},
-    {name:"安哲拉", cov:["阿戈尔","助力"]},
-    {name:"复奏", cov:["叙拉古","莱塔尼亚","奇迹"]},
-    {name:"奥斯塔", cov:["叙拉古"]},
-    {name:"砾", cov:["卡西米尔","不屈"]},
-    {name:"真理", cov:["乌萨斯"]},
-    {name:"蓝毒", cov:["伊比利亚"]},
-    {name:"瑰盐", cov:["伊比利亚","聚合"]},
-    {name:"折光", cov:["莱塔尼亚"]},
-    {name:"承曦格雷伊", cov:["精准","灵巧"]},
-    {name:"波登可", cov:["迅捷","聚合"]},
-    {name:"云迹", cov:["灵巧","奇迹"]},
-    {name:"蛇屠箱", cov:["坚守"]},
-    {name:"星源", cov:["助力"]},
-    {name:"渡桥", cov:["远见"]},
-    {name:"星极", cov:["奇迹"]},
-    {name:"锡人", cov:["投资人"]},
-    {name:"铸铁", cov:["突袭"]},
-    {name:"宴", cov:["不屈"]},
-  ],
-  "Ⅲ": [
-    {name:"风絮", cov:["炎","聚合"]},
-    {name:"乌有", cov:["炎"]},
-    {name:"卡涅利安", cov:["萨尔贡","莱塔尼亚","迅捷"]},
-    {name:"至简", cov:["萨尔贡"]},
-    {name:"水灯心", cov:["维多利亚","灵巧","独行"]},
-    {name:"凯瑟琳", cov:["维多利亚","远见"]},
-    {name:"极光", cov:["谢拉格"]},
-    {name:"耶拉", cov:["谢拉格","奇迹"]},
-    {name:"初雪", cov:["谢拉格","协防干员"]},
-    {name:"深巡", cov:["阿戈尔","坚守"]},
-    {name:"斯卡蒂", cov:["阿戈尔","突袭"]},
-    {name:"忍冬", cov:["叙拉古","迅捷"]},
-    {name:"伺夜", cov:["叙拉古","精准"]},
-    {name:"瑕光", cov:["卡西米尔","突袭"]},
-    {name:"历阵锐枪芬", cov:["卡西米尔","远见"]},
-    {name:"乌啾", cov:["乌萨斯","聚合"]},
-    {name:"奥尔佳", cov:["乌萨斯","灵巧"]},
-    {name:"海沫", cov:["伊比利亚","不屈"]},
-    {name:"旅骨", cov:["伊比利亚","精准"]},
-    {name:"车尔尼", cov:["莱塔尼亚","坚守"]},
-    {name:"空弦", cov:["精准","远见"]},
-    {name:"青枳", cov:["迅捷","坚守"]},
-    {name:"罗比菈塔", cov:["坚守","助力"]},
-    {name:"吉星", cov:["奇迹"]},
-    {name:"伊桑", cov:["突袭","奥术"]},
-    {name:"风丸", cov:["不屈"]},
-    {name:"盟约·辅助干员", cov:["调和"]},
-  ],
-  "Ⅳ": [
-    {name:"余", cov:["炎","坚守"]},
-    {name:"仇白", cov:["炎","灵巧"]},
-    {name:"森蚺", cov:["萨尔贡","不屈"]},
-    {name:"异客", cov:["萨尔贡","奥术"]},
-    {name:"涤火杰西卡", cov:["维多利亚","坚守"]},
-    {name:"白铁", cov:["维多利亚","助力"]},
-    {name:"灵知", cov:["谢拉格","迅捷"]},
-    {name:"归溟幽灵鲨", cov:["阿戈尔","不屈"]},
-    {name:"水月", cov:["阿戈尔","灵巧"]},
-    {name:"斥罪", cov:["叙拉古","不屈"]},
-    {name:"安洁莉娜", cov:["叙拉古","奇迹"]},
-    {name:"远牙", cov:["卡西米尔","精准"]},
-    {name:"玛恩纳", cov:["卡西米尔"]},
-    {name:"赫拉格", cov:["乌萨斯","突袭"]},
-    {name:"维伊", cov:["乌萨斯","奥术"]},
-    {name:"温蒂", cov:["伊比利亚","坚守"]},
-    {name:"流明", cov:["伊比利亚","聚合"]},
-    {name:"黑键", cov:["莱塔尼亚","精准"]},
-    {name:"艾雅法拉", cov:["莱塔尼亚","奥术"]},
-    {name:"霍尔海雅", cov:["精准","奥术"]},
-    {name:"华法琳", cov:["灵巧","聚合"]},
-    {name:"寒檀", cov:["远见"]},
-    {name:"山", cov:["投资人"]},
-    {name:"赫德雷", cov:["突袭"]},
-    {name:"夜莺", cov:["协防干员","聚合"]},
-    {name:"W", cov:["迅捷"]},
-    {name:"淬羽赫默", cov:["助力"]},
-  ],
-  "Ⅴ": [
-    {name:"黍", cov:["炎","远见"]},
-    {name:"老鲤", cov:["炎","投资人"]},
-    {name:"佩佩", cov:["萨尔贡","灵巧"]},
-    {name:"鸿雪", cov:["萨尔贡","精准"]},
-    {name:"维娜·维多利亚", cov:["维多利亚","奇迹"]},
-    {name:"圣聆初雪", cov:["谢拉格","奥术"]},
-    {name:"凛御银灰", cov:["谢拉格","灵巧","投资人"]},
-    {name:"歌蕾蒂娅", cov:["阿戈尔"]},
-    {name:"乌尔比安", cov:["阿戈尔"]},
-    {name:"铃兰", cov:["叙拉古"]},
-    {name:"贝洛内", cov:["叙拉古","突袭"]},
-    {name:"薇薇安娜", cov:["卡西米尔","莱塔尼亚","奥术"]},
-    {name:"焰尾", cov:["卡西米尔","迅捷"]},
-    {name:"怒潮凛冬", cov:["乌萨斯","奇迹"]},
-    {name:"冻河", cov:["乌萨斯","迅捷"]},
-    {name:"艾丽妮", cov:["伊比利亚"]},
-    {name:"棘刺", cov:["伊比利亚","奥术"]},
-    {name:"纯烬艾雅法拉", cov:["莱塔尼亚","远见","聚合"]},
-    {name:"迷迭香", cov:["精准","助力"]},
-    {name:"隐德来希", cov:["灵巧","不屈"]},
-    {name:"塞雷娅", cov:["坚守","协防干员"]},
-    {name:"可露希尔", cov:["投资人"]},
-    {name:"Mon3tr", cov:["协防干员"]},
-    {name:"阿米娅", cov:["奇迹"]},
-    {name:"溯光星源", cov:["奥术"]},
-    {name:"暴躁铁皮", cov:["协防干员"], isBaozao:true},
-  ],
-  "Ⅵ": [
-    {name:"烛煌", cov:["炎","维多利亚","迅捷"]},
-    {name:"夕", cov:["炎","奥术"]},
-    {name:"真言", cov:["萨尔贡"]},
-    {name:"酒神", cov:["维多利亚"]},
-    {name:"锏", cov:["谢拉格","卡西米尔","莱塔尼亚"]},
-    {name:"浊心斯卡蒂", cov:["阿戈尔","聚合"]},
-    {name:"克莱门莎", cov:["阿戈尔"]},
-    {name:"荒芜拉普兰德", cov:["叙拉古"]},
-    {name:"耀骑士临光", cov:["卡西米尔","突袭"]},
-    {name:"塔露拉", cov:["乌萨斯","协防干员","奥术"]},
-    {name:"引星棘刺", cov:["伊比利亚","迅捷"]},
-    {name:"逻各斯", cov:["远见","奥术"]},
-    {name:"蕾缪安", cov:["精准"]},
-    {name:"妮芙", cov:["迅捷","远见"]},
-    {name:"帕拉斯", cov:["灵巧","助力"]},
-    {name:"机械师", cov:["坚守","协防干员"]},
-    {name:"缪尔赛思", cov:["协防干员"]},
-    {name:"遥", cov:["奇迹","聚合"]},
-    {name:"史尔特尔", cov:["突袭","不屈"]},
-    {name:"魔王", cov:["调和"]},
-  ],
-};
-
-const SPECIAL_MEMBERS = {
-  "调和": ["巫役（分支占位）"],
-  "协防干员": ["不屈者（分支占位）"],
-};
-
-/* ========== 状态 ========== */
-const selected = new Set();
-const banned = new Set();
-const expanded = new Set();
-const equipments = {};
-const filterCovs = new Set(); // 新增：用来保存选中的筛选盟约
+let bans = new Set();
+let sels = []; 
+let filterCovs = new Set();
 const GRADE_ORDER = ["Ⅰ","Ⅱ","Ⅲ","Ⅳ","Ⅴ","Ⅵ"];
 
 const OP_INDEX = {};
 GRADE_ORDER.forEach(g => {
-  OPERATORS[g].forEach(op => { OP_INDEX[g + "|" + op.name] = {grade:g, ...op}; });
+  OPS.forEach(op => {
+    if(op.g === g) OP_INDEX[g + "|" + op.n] = op;
+  });
 });
 
-function keyOf(grade, name){ return grade + "|" + name; }
-
-/* ===== Ban 规则 ===== */
-function getCoreCovenants(op){
-  return op.cov.filter(c => CORE_NAMES.has(c));
-}
-function getFirstCoreCovenant(op){
-  const cores = getCoreCovenants(op);
-  return cores.length > 0 ? cores[0] : null;
-}
-function isOperatorDisabled(op){
-  const firstCore = getFirstCoreCovenant(op);
-  if(firstCore){
-    return banned.has(firstCore);
-  }else{
-    return op.cov.length > 0 && op.cov.every(c => banned.has(c));
-  }
-}
-function disabledReason(op){
-  const firstCore = getFirstCoreCovenant(op);
-  if(firstCore && banned.has(firstCore)){
-    return `第一核心盟约【${firstCore}】已被 Ban，无法选择`;
-  }
-  if(!firstCore && op.cov.length > 0 && op.cov.every(c => banned.has(c))){
-    return `所属盟约【${op.cov.join("、")}】均已被 Ban，无法选择`;
-  }
-  return "";
+function isBanned(op) {
+  const cores = op.c.filter(x => CORES.has(x));
+  if (cores.length > 0) return bans.has(cores[0]);
+  return op.c.every(x => bans.has(x));
 }
 
-/* ===== 装备提供盟约 ===== */
-function getEquipmentCov(key){
-  const eqs = equipments[key] || [];
-  const covs = new Set();
-  let mimicCount = 0;
-  const others = [];
-  eqs.forEach(name => {
-    if(name === "（无）" || !name) return;
-    const e = EQUIP_INDEX[name];
-    if(e) {
-      if(e.isMimic) mimicCount++;
-      else others.push(e);
-    }
+function getEquipCovs(inst) {
+  const eqArr = inst.eqs || [];
+  let hasMimic = false;
+  let others = [];
+  eqArr.forEach(eq => {
+    if (eq === "（无）" || !eq) return;
+    if (eq === "变形同构体") hasMimic = true;
+    else if (EQ_MAP[eq]) others.push(EQ_MAP[eq]);
   });
-  if(mimicCount > 0 && others.length > 0){
-    others.forEach(o => o.cov.forEach(c => covs.add(c)));
-  }
-  return [...covs];
+  return hasMimic ? others : [];
 }
 
-/* ========== Ban 列表（去掉了缩写图标） ========== */
-function renderBanList(){
-  const box = document.getElementById("banList");
-  box.innerHTML = "";
-  COVENANTS.forEach(c => {
-    const label = document.createElement("label");
-    label.className = "ban-chip" + (banned.has(c.name) ? " on" : "");
-    label.innerHTML = `
-      <input type="checkbox" ${banned.has(c.name) ? "checked" : ""}>
-      <span>${c.name}</span>
-    `;
-    const cb = label.querySelector("input");
-    cb.addEventListener("change", () => {
-      if(cb.checked) banned.add(c.name);
-      else banned.delete(c.name);
-      [...selected].forEach(k => {
-        const op = OP_INDEX[k];
-        if(op && isOperatorDisabled(op)) {
-          selected.delete(k);
-          delete equipments[k];
-        }
-      });
-      renderBanList();
-      renderOperators();
-      renderEquipList();
-      renderCovenants();
-    });
-    box.appendChild(label);
-  });
-}
-
-/* ========== 盟约筛选栏 ========== */
-function renderFilterList() {
-  const box = document.getElementById("filterList");
-  box.innerHTML = "";
-  COVENANTS.forEach(c => {
+function renderBan() {
+  const el = document.getElementById("banList");
+  el.innerHTML = "";
+  COVS.forEach(c => {
     const chip = document.createElement("div");
-    chip.className = "filter-chip" + (filterCovs.has(c.name) ? " on" : "");
-    chip.textContent = c.name;
-    chip.addEventListener("click", () => {
-      if (filterCovs.has(c.name)) {
-        filterCovs.delete(c.name);
-      } else {
-        filterCovs.add(c.name);
-      }
-      renderFilterList();
-      renderOperators();
-    });
-    box.appendChild(chip);
+    chip.className = "ban-chip" + (bans.has(c.n) ? " on" : "");
+    chip.textContent = c.n;
+    chip.onclick = () => {
+      if(bans.has(c.n)) bans.delete(c.n); else bans.add(c.n);
+      sels = sels.filter(inst => !isBanned(inst.op));
+      renderAll();
+    };
+    el.appendChild(chip);
   });
 }
 
-/* ========== 干员列表（支持盟约筛选） ========== */
-function renderOperators(){
-  const box = document.getElementById("operatorList");
-  box.innerHTML = "";
-  const f = document.getElementById("search").value.trim().toLowerCase();
+function renderFilterList() {
+  const el = document.getElementById("filterList");
+  el.innerHTML = "";
+  COVS.forEach(c => {
+    const chip = document.createElement("div");
+    chip.className = "filter-chip" + (filterCovs.has(c.n) ? " on" : "");
+    chip.textContent = c.n;
+    chip.onclick = () => {
+      if (filterCovs.has(c.n)) filterCovs.delete(c.n);
+      else filterCovs.add(c.n);
+      renderFilterList();
+      renderOps();
+    };
+    el.appendChild(chip);
+  });
+}
 
-  GRADE_ORDER.forEach(grade => {
-    const list = OPERATORS[grade].filter(op => {
-      // 1. 文字过滤
-      if(f) {
-        const matchName = op.name.toLowerCase().includes(f);
-        const matchCov = op.cov.some(c => c.toLowerCase().includes(f));
+function renderOps() {
+  const el = document.getElementById("operatorList");
+  el.innerHTML = "";
+  const kw = document.getElementById("search").value.trim().toLowerCase();
+  
+  GRADE_ORDER.forEach(g => {
+    const list = OPS.filter(op => {
+      if(op.g !== g) return false;
+      
+      if(kw) {
+        const matchName = op.n.toLowerCase().includes(kw);
+        const matchCov = op.c.some(x => x.includes(kw));
         if(!matchName && !matchCov) return false;
       }
       
-      // 2. 列表筛选过滤（需包含所有选中的盟约）
       if (filterCovs.size > 0) {
-        for (let cov of filterCovs) {
-          if (!op.cov.includes(cov)) return false;
+        for (let c of filterCovs) {
+          if (!op.c.includes(c)) return false;
         }
       }
       
       return true;
     });
-
+    
     if(list.length === 0) return;
-
+    
     const block = document.createElement("div");
     block.className = "grade-block";
-
-    const title = document.createElement("div");
-    title.className = "grade-title";
-    title.textContent = grade + " 阶";
-    block.appendChild(title);
-
+    block.innerHTML = `<div class="grade-title">${g} 阶</div>`;
     const chips = document.createElement("div");
     chips.className = "chips";
 
     list.forEach(op => {
-      const k = keyOf(grade, op.name);
-      const disabled = isOperatorDisabled(op);
+      const k = g + "|" + op.n;
+      const disabled = isBanned(op);
+      
+      const count = sels.filter(inst => inst.op.n === op.n).length;
+      const countText = count > 0 ? `<span style="color:#1f6feb;margin-left:4px;font-weight:bold;">×${count}</span>` : "";
+      
       const chip = document.createElement("div");
-      chip.className = "chip"
-        + (selected.has(k) ? " selected" : "")
-        + (disabled ? " disabled" : "");
-      chip.dataset.key = k;
-      chip.innerHTML = `${op.name}<span class="g">${grade}</span>`;
-      chip.title = disabled ? disabledReason(op) : op.cov.join(" / ");
+      chip.className = "chip" + (count > 0 ? " selected" : "") + (disabled ? " disabled" : "");
+      chip.innerHTML = `${op.n}<span class="g">${g}</span>${countText}`;
+      
+      chip.title = op.c.join(" / ");
 
-      if(disabled){
-        chip.addEventListener("click", e => e.stopPropagation());
-      }else{
-        chip.addEventListener("click", () => {
-          if(selected.has(k)) {
-            selected.delete(k);
-            delete equipments[k];
-          } else {
-            selected.add(k);
-          }
-          chip.classList.toggle("selected");
-          renderEquipList();
-          renderCovenants();
-        });
+      if(!disabled) {
+        chip.onclick = () => {
+          const newInst = {
+            uid: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+            op: op,
+            eqs: Array(op.special === "6格" ? 6 : 2).fill("（无）")
+          };
+          sels.push(newInst);
+          renderAll();
+        };
       }
+
+      // 右上角加“-”按钮
+      if (count > 0) {
+        const minusBtn = document.createElement("div");
+        minusBtn.className = "chip-minus";
+        minusBtn.textContent = "-";
+        minusBtn.onclick = (e) => {
+          e.stopPropagation(); // 阻止触发父元素的点击事件
+          // 找到最后一个该干员的实例并移除
+          for (let i = sels.length - 1; i >= 0; i--) {
+            if (sels[i].op.n === op.n) {
+              sels.splice(i, 1);
+              break;
+            }
+          }
+          renderAll();
+        };
+        chip.appendChild(minusBtn);
+      }
+
       chips.appendChild(chip);
     });
 
     block.appendChild(chips);
-    box.appendChild(block);
+    el.appendChild(block);
   });
-
-  if(box.children.length === 0){
-    box.innerHTML = '<div class="empty">没有匹配的干员。</div>';
-  }
+  
+  if(el.children.length === 0) el.innerHTML = '<div class="empty">没有匹配的干员。</div>';
 }
 
-/* ========== 装备列表 ========== */
-function renderEquipList(){
-  const box = document.getElementById("equipList");
-  const note = document.getElementById("equipNote");
-  box.innerHTML = "";
-  note.textContent = "";
+function renderEquip() {
+  const el = document.getElementById("equipList");
+  el.innerHTML = "";
+  if (sels.length === 0) { el.innerHTML = '<div class="equip-empty">请先选择干员，再为干员指定装备。</div>'; return; }
 
-  if(selected.size === 0){
-    box.innerHTML = '<div class="equip-empty">请先选择干员，再为干员指定装备。</div>';
-    return;
-  }
-
-  const keys = [...selected].sort((a,b) => {
-    const ga = GRADE_ORDER.indexOf(a.split("|")[0]);
-    const gb = GRADE_ORDER.indexOf(b.split("|")[0]);
+  sels.sort((a,b) => {
+    const ga = GRADE_ORDER.indexOf(a.op.g);
+    const gb = GRADE_ORDER.indexOf(b.op.g);
     if(ga !== gb) return ga - gb;
-    return a.localeCompare(b, "zh");
+    return a.op.n.localeCompare(b.op.n, "zh");
   });
 
-  keys.forEach(k => {
-    const op = OP_INDEX[k];
-    if(!op) return;
-    
-    const maxEquip = op.isBaozao ? 6 : 2;
+  sels.forEach(inst => {
+    const op = inst.op;
+    const max = op.special === "6格" ? 6 : 2;
 
     const row = document.createElement("div");
     row.className = "equip-row";
 
+    const header = document.createElement("div");
+    header.className = "equip-header";
+
     const name = document.createElement("div");
     name.className = "equip-op";
-    name.innerHTML = `${op.name}<span class="g">${op.grade}</span>`
-      + (op.isBaozao ? `<span class="sp">6格</span>` : "");
-    row.appendChild(name);
+    name.innerHTML = `${op.n}<span class="g">${op.g}</span>` + (op.special ? `<span class="sp">6格</span>` : "");
+    header.appendChild(name);
 
-    const selectsDiv = document.createElement("div");
-    selectsDiv.className = "equip-selects" + (op.isBaozao ? " multi" : "");
-    
-    if (!equipments[k]) equipments[k] = Array(maxEquip).fill("（无）");
-    while(equipments[k].length < maxEquip) equipments[k].push("（无）");
-    
-    for (let i = 0; i < maxEquip; i++) {
-        const sel = document.createElement("select");
-        sel.className = "equip-select";
-        EQUIPMENTS.forEach(eq => {
-          const opt = document.createElement("option");
-          opt.value = eq.name;
-          opt.textContent = eq.name;
-          if(equipments[k][i] === eq.name) opt.selected = true;
-          sel.appendChild(opt);
-        });
-        
-        sel.addEventListener("change", () => {
-            equipments[k][i] = sel.value;
-            renderEquipList();
-            renderCovenants();
-        });
-        selectsDiv.appendChild(sel);
-    }
+    const extraCovs = getEquipCovs(inst);
+    const allCovs = Array.from(new Set([...op.c, ...extraCovs]));
+    const covsEl = document.createElement("div");
+    covsEl.className = "equip-covs";
+    covsEl.textContent = allCovs.join(" / ");
+    header.appendChild(covsEl);
 
-    row.appendChild(selectsDiv);
+    row.appendChild(header);
 
     const clr = document.createElement("button");
-    clr.className = "equip-clear";
-    clr.textContent = "清除";
-    clr.addEventListener("click", () => {
-      equipments[k] = Array(maxEquip).fill("（无）");
-      renderEquipList();
-      renderCovenants();
-    });
+    clr.className = "equip-remove";
+    clr.innerHTML = "×";
+    clr.onclick = () => {
+      sels = sels.filter(x => x.uid !== inst.uid);
+      renderAll();
+    };
     row.appendChild(clr);
 
-    box.appendChild(row);
+    const controls = document.createElement("div");
+    controls.className = "equip-controls";
+
+    const selectsDiv = document.createElement("div");
+    selectsDiv.className = "equip-selects" + (op.special ? " multi" : "");
+    
+    for(let i=0; i<max; i++) {
+      const sel = document.createElement("select");
+      sel.className = "equip-select";
+      EQUIPS.forEach(e => {
+        const opt = document.createElement("option");
+        opt.value = e; opt.textContent = e;
+        if(inst.eqs[i] === e) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      sel.onchange = () => { inst.eqs[i] = sel.value; renderAll(); };
+      selectsDiv.appendChild(sel);
+    }
+    controls.appendChild(selectsDiv);
+
+    row.appendChild(controls);
+    el.appendChild(row);
   });
-  
-  note.textContent = "普通干员最多 2 件装备，暴躁铁皮最多 6 件。只有装备了“变形同构体”，其他装备才会为干员附加对应盟约。";
 }
 
-/* ========== 盟约结果 ========== */
-function renderCovenants(){
-  const listBox = document.getElementById("covenantList");
+function renderResult() {
+  const el = document.getElementById("covenantList");
   const summary = document.getElementById("summary");
-  listBox.innerHTML = "";
+  el.innerHTML = "";
+  
+  let covMembers = new Map();
+  COVS.forEach(c => covMembers.set(c.n, new Set()));
 
-  const baseCounts = {};
-  const members = {};
-  COVENANTS.forEach(c => { baseCounts[c.name] = 0; members[c.name] = []; });
+  let bases = {};
+  COVS.forEach(c => { bases[c.n] = new Set(); });
 
-  selected.forEach(k => {
-    const op = OP_INDEX[k];
-    if(!op) return;
-
-    op.cov.forEach(cn => {
-      if(!(cn in baseCounts)) return;
-      baseCounts[cn]++;
-      members[cn].push({name:op.name, grade:op.grade, fromEquip:false});
+  sels.forEach(inst => {
+    const op = inst.op;
+    op.c.forEach(c => {
+      covMembers.get(c).add(op.n);
+      bases[c].add(op.n);
     });
-
-    const eqCov = getEquipmentCov(k);
-    eqCov.forEach(cn => {
-      if(!(cn in baseCounts)) return;
-      baseCounts[cn]++;
-      members[cn].push({name:op.name, grade:op.grade, fromEquip:true, equipName:"变形同构"});
+    getEquipCovs(inst).forEach(c => {
+      covMembers.get(c).add(op.n);
     });
   });
 
-  const harmonyBanned = banned.has(HARMONY_NAME);
-  const harmonyActive = !harmonyBanned && baseCounts[HARMONY_NAME] >= HARMONY_NEED;
-  const coreBonus = harmonyActive ? 1 : 0;
+  const hasHarmony = bases["调和"].size >= 1;
 
-  const counts = {};
-  COVENANTS.forEach(c => {
-    counts[c.name] = baseCounts[c.name] + (CORE_NAMES.has(c.name) ? coreBonus : 0);
-  });
+  let activeCnt = 0;
+  let rows = [];
 
-  const totalSelected = selected.size;
-  const activeCount = COVENANTS.filter(c =>
-    !banned.has(c.name) && c.need != null && counts[c.name] >= c.need
-  ).length;
-
-  if(totalSelected === 0){
-    summary.innerHTML = `尚未选择干员。${banned.size ? ` 已 Ban ${banned.size} 个盟约。` : ""}`;
-  }else{
-    summary.innerHTML = `已选择 <b>${totalSelected}</b> 名干员；当前已激活盟约 <b>${activeCount}</b> 个。`
-      + (harmonyActive ? ` 调和已激活，核心盟约人数 <b>+1</b>。` : "")
-      + (banned.size ? ` 已 Ban <b>${banned.size}</b> 个盟约。` : "");
-  }
-
-  const sorted = [...COVENANTS].sort((a,b) => {
-    const ba = banned.has(a.name), bb = banned.has(b.name);
-    if(ba !== bb) return ba ? 1 : -1;
-    return score(b) - score(a);
-  });
-
-  function score(c){
-    const n = counts[c.name];
-    if(c.need == null) return n > 0 ? 1 : 0;
-    if(n >= c.need) return 2;
-    if(n > 0) return 1;
-    return 0;
-  }
-
-  sorted.forEach(c => {
-    const n = counts[c.name];
-    const base = baseCounts[c.name];
-    const isCore = CORE_NAMES.has(c.name);
-    const bonus = isCore ? coreBonus : 0;
-    const isBanned = banned.has(c.name);
-    const active = !isBanned && c.need != null && n >= c.need;
-    const partial = !isBanned && !active && n > 0;
-    const isExpanded = expanded.has(c.name);
-
-    const row = document.createElement("div");
-    row.className = "cov-row"
-      + (isBanned ? " banned" : active ? " active" : partial ? " partial" : "")
-      + (isExpanded ? " expanded" : "");
-
-    const needText = c.need == null ? "—" : c.need;
-    let badge = "";
-    if(isBanned){
-      badge = '<span class="badge ban">已 Ban</span>';
-    }else if(c.need != null){
-      badge = active
-        ? '<span class="badge on">已激活</span>'
-        : '<span class="badge off">未激活</span>';
+  COVS.forEach(c => {
+    let n = covMembers.get(c.n).size;
+    
+    if (hasHarmony && CORES.has(c.n)) {
+      n += 1;
     }
-    const bonusTag = bonus > 0
-      ? `<span class="bonus-tag">+${bonus}调和</span>`
-      : "";
-    const eqCount = (members[c.name] || []).filter(m => m.fromEquip).length;
-    const eqTag = eqCount > 0
-      ? `<span class="equip-tag">装${eqCount}</span>`
-      : "";
 
-    row.innerHTML = `
+    if (n === 0) return; 
+
+    const isActive = n >= c.r;
+    if (isActive) activeCnt++;
+    rows.push({ c, n, isActive });
+  });
+
+  rows.sort((a, b) => {
+    if (a.isActive !== b.isActive) return a.isActive ? -1 : 1;
+    return 0; 
+  });
+
+  const totalInsts = sels.length;
+
+  if (totalInsts === 0) {
+    summary.innerHTML = `尚未选择干员。${bans.size ? ` 已 Ban ${bans.size} 个盟约。` : ""}`;
+  } else if (rows.length === 0) {
+    summary.innerHTML = `已选择 <b>${totalInsts}</b> 名干员，但未提供任何盟约；已激活盟约 <b>0</b> 个。`;
+  } else {
+    summary.innerHTML = `已选择 <b>${totalInsts}</b> 名干员；当前已激活盟约 <b>${activeCnt}</b> 个。`
+      + (hasHarmony ? ` 调和已激活，核心盟约人数 <b>+1</b>。` : "")
+      + (bans.size ? ` 已 Ban <b>${bans.size}</b> 个盟约。` : "");
+  }
+
+  rows.forEach(({ c, n, isActive }) => {
+    const div = document.createElement("div");
+    div.className = "cov-row" + (isActive ? " active" : "");
+
+    const bonusTag = (CORES.has(c.n) && hasHarmony) ? `<span class="bonus-tag">+1调和</span>` : "";
+    
+    div.innerHTML = `
       <div class="cov-icon">${c.icon}</div>
-      <span class="cov-name">${c.name}</span>
-      <span class="cov-type">${c.type}</span>
+      <span class="cov-name">${c.n}</span>
+      <span class="cov-type">${c.t}</span>
       <span class="cov-spacer"></span>
-      ${eqTag}
       ${bonusTag}
-      <span class="cov-count"><b>${n}</b> / ${needText}</span>
-      ${badge}
+      <span class="cov-count"><b>${n}</b> / ${c.r}</span>
+      ${isActive ? '<span class="badge on">已激活</span>' : ''}
     `;
-    const tips = [];
-    if(bonus > 0) tips.push(`基础 ${base} 人，调和激活 +${bonus}，合计 ${n}`);
-    if(eqCount > 0) tips.push(`其中 ${eqCount} 个归属来自装备`);
-    if(tips.length) row.title = tips.join("；");
-
-    row.addEventListener("click", () => {
-      if(expanded.has(c.name)) expanded.delete(c.name);
-      else expanded.add(c.name);
-      renderCovenants();
-    });
-
-    listBox.appendChild(row);
-
-    const memberArr = [...(members[c.name] || [])];
-    (SPECIAL_MEMBERS[c.name] || []).forEach(s => memberArr.push({name:s, grade:"—"}));
-
-    const mem = document.createElement("div");
-    mem.className = "cov-members";
-    if(memberArr.length > 0){
-      mem.innerHTML = memberArr.map(m => {
-        const isHit = m.grade !== "—" && selected.has(keyOf(m.grade, m.name));
-        const label = m.grade === "—" ? m.name : `${m.name}（${m.grade}）`;
-        const baseLabel = isHit ? `<span class="hit">${label}</span>` : label;
-        if(m.fromEquip){
-          return `${baseLabel}<span class="eq">[变形同构]</span>`;
-        }
-        return baseLabel;
-      }).join("、")
-      + (bonus > 0 ? ` <span class="hit">（调和 +${bonus}）</span>` : "");
-    }else{
-      mem.textContent = bonus > 0
-        ? `页面未列所属干员（调和 +${bonus}）。`
-        : "页面未列所属干员。";
-    }
-    listBox.appendChild(mem);
+    el.appendChild(div);
   });
 }
 
-/* ========== 事件 ========== */
-document.getElementById("search").addEventListener("input", () => {
-  renderOperators();
-});
+function renderAll() {
+  renderBan(); renderFilterList(); renderOps(); renderEquip(); renderResult();
+}
 
-document.getElementById("clearBtn").addEventListener("click", () => {
-  selected.clear();
-  for(const k in equipments) delete equipments[k];
-  document.getElementById("search").value = "";
-  filterCovs.clear();
-  renderFilterList();
-  renderOperators();
-  renderEquipList();
-  renderCovenants();
-});
-
-document.getElementById("selectAllBtn").addEventListener("click", () => {
-  const f = document.getElementById("search").value.trim().toLowerCase();
-  GRADE_ORDER.forEach(g => {
-    OPERATORS[g].forEach(op => {
-      if(isOperatorDisabled(op)) return;
-      
-      let match = true;
-      if(f) {
-        const matchName = op.name.toLowerCase().includes(f);
-        const matchCov = op.cov.some(c => c.toLowerCase().includes(f));
-        if(!matchName && !matchCov) match = false;
-      }
-      if(match && filterCovs.size > 0) {
-        for(let cov of filterCovs) {
-          if(!op.cov.includes(cov)) match = false;
-        }
-      }
-      
-      if(match) selected.add(keyOf(g, op.name));
-    });
-  });
-  renderOperators();
-  renderEquipList();
-  renderCovenants();
-});
-
-/* ========== 初始化 ========== */
-renderBanList();
-renderFilterList();
-renderOperators();
-renderEquipList();
-renderCovenants();
+document.getElementById("search").oninput = renderOps;
+renderAll();
 </script>
 </body>
 </html>
