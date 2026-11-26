@@ -26,7 +26,7 @@
     padding:16px;
   }
   .panel h2{font-size:15px;margin:0 0 12px;color:var(--accent2)}
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px; align-items: center;}
   button{
     background:var(--panel2);color:var(--text);border:1px solid var(--line);
     border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;
@@ -36,6 +36,30 @@
     flex:1;min-width:140px;background:var(--panel2);color:var(--text);
     border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;
   }
+  
+  /* 快捷操作按钮组 */
+  .action-group {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+  }
+  
+  /* 修改为蓝色字体的按钮 */
+  .action-btn {
+    background: transparent; border: 1px solid var(--accent2); border-radius: 6px;
+    padding: 4px 10px; font-size: 12px; cursor: pointer; transition: all .1s;
+    color: var(--accent2);
+  }
+  .action-btn:hover { color: #fff; background: var(--accent2); }
+
+  /* 隐藏已Ban开关 */
+  .toggle-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; cursor: pointer; user-select: none; color: var(--accent2);
+  }
+  .toggle-label input {
+    accent-color: var(--accent2); width: 16px; height: 16px; cursor: pointer;
+  }
+
   .grade-block{margin-bottom:14px}
   .grade-title{
     font-size:12px;color:var(--muted);letter-spacing:.05em;margin-bottom:6px;
@@ -43,7 +67,6 @@
   }
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   
-  /* 干员标签样式 */
   .chip{
     position: relative;
     background:var(--panel2);border:1px solid var(--line);border-radius:999px;
@@ -59,7 +82,6 @@
   .chip .g{color:var(--muted);font-size:11px;margin-left:4px}
   .chip.selected .g{color:#9ecbff}
   
-  /* 右上角的减号按钮 */
   .chip-minus {
     position: absolute;
     top: -4px;
@@ -89,7 +111,18 @@
     background:var(--panel2);border:1px dashed var(--line);border-radius:8px;
     padding:10px;margin-bottom:14px;
   }
-  .ban-title{font-size:13px;font-weight:600;margin-bottom:8px;color:var(--danger)}
+  .ban-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .ban-title{font-size:13px;font-weight:600;color:var(--danger); margin: 0;}
+  .btn-clear-ban {
+    background: transparent; border: 1px solid var(--danger); border-radius: 4px;
+    color: var(--danger); font-size: 12px; cursor: pointer; padding: 2px 8px; 
+    transition: all .1s;
+  }
+  .btn-clear-ban:hover { color: #fff; background: var(--danger); }
+
   .ban-list{display:flex;flex-wrap:wrap;gap:6px}
   .ban-chip{
     background:var(--panel);
@@ -104,11 +137,23 @@
   .ban-chip:hover{border-color:var(--danger)}
   .ban-chip.on{background:#f8514922;border-color:var(--danger);color:#ffb3ad}
 
+  /* 筛选框与按钮 */
   .filter-box {
     background: var(--panel2); border: 1px dashed var(--line); border-radius: 8px;
     padding: 10px; margin-bottom: 12px;
   }
-  .filter-title{font-size:12px;font-weight:600;margin-bottom:8px;color:var(--accent)}
+  .filter-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .filter-title{font-size:12px;font-weight:600;color:var(--accent); margin: 0;}
+  .btn-clear-filter {
+    background: transparent; border: 1px solid var(--accent); border-radius: 4px;
+    color: var(--accent); font-size: 12px; cursor: pointer; padding: 2px 8px; 
+    transition: all .1s;
+  }
+  .btn-clear-filter:hover { color: #fff; background: var(--accent); }
+
   .filter-list{display:flex;flex-wrap:wrap;gap:6px;}
   .filter-chip{
     background:var(--panel); border:1px solid var(--line); border-radius:6px;
@@ -228,16 +273,29 @@
 
 <div class="layout">
   <div class="panel">
-    <h2>Ban 盟约</h2>
     <div class="ban-box">
-      <div class="ban-title">点击切换要 Ban 的盟约（仅限制干员选择）</div>
+      <div class="ban-header">
+        <div class="ban-title">Ban盟约（可多选）</div>
+        <button class="btn-clear-ban" id="clearBansBtn">清除</button>
+      </div>
       <div class="ban-list" id="banList"></div>
     </div>
 
     <h2>选择干员</h2>
     <div class="filter-box">
-      <div class="filter-title">按盟约筛选（可多选）</div>
+      <div class="filter-header">
+        <div class="filter-title">按盟约筛选（可多选）</div>
+        <button class="btn-clear-filter" id="clearFilterBtn">清除</button>
+      </div>
       <div class="filter-list" id="filterList"></div>
+    </div>
+
+    <!-- 快捷操作栏：左侧隐藏，右侧清除 -->
+    <div class="action-group">
+      <label class="toggle-label">
+        <input type="checkbox" id="hideBanned"> 隐藏已 Ban 干员
+      </label>
+      <button class="action-btn" id="clearSelsBtn">清除已选干员</button>
     </div>
 
     <div class="toolbar">
@@ -405,6 +463,7 @@ function renderOps() {
   const el = document.getElementById("operatorList");
   el.innerHTML = "";
   const kw = document.getElementById("search").value.trim().toLowerCase();
+  const hideBanned = document.getElementById("hideBanned").checked;
   
   GRADE_ORDER.forEach(g => {
     const list = OPS.filter(op => {
@@ -421,6 +480,8 @@ function renderOps() {
           if (!op.c.includes(c)) return false;
         }
       }
+
+      if (hideBanned && isBanned(op)) return false;
       
       return true;
     });
@@ -458,14 +519,12 @@ function renderOps() {
         };
       }
 
-      // 右上角加“-”按钮
       if (count > 0) {
         const minusBtn = document.createElement("div");
         minusBtn.className = "chip-minus";
         minusBtn.textContent = "-";
         minusBtn.onclick = (e) => {
-          e.stopPropagation(); // 阻止触发父元素的点击事件
-          // 找到最后一个该干员的实例并移除
+          e.stopPropagation();
           for (let i = sels.length - 1; i >= 0; i--) {
             if (sels[i].op.n === op.n) {
               sels.splice(i, 1);
@@ -638,7 +697,14 @@ function renderAll() {
   renderBan(); renderFilterList(); renderOps(); renderEquip(); renderResult();
 }
 
+/* 按钮事件绑定 */
+document.getElementById("clearSelsBtn").onclick = () => { sels = []; renderAll(); };
+document.getElementById("clearFilterBtn").onclick = () => { filterCovs.clear(); renderAll(); };
+document.getElementById("clearBansBtn").onclick = () => { bans.clear(); renderAll(); };
+
 document.getElementById("search").oninput = renderOps;
+document.getElementById("hideBanned").onchange = renderOps;
+
 renderAll();
 </script>
 </body>
